@@ -1,0 +1,1452 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>CPA/600 — IATSE Local 600 / AICP Commercial Production Agreement Calc</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Barlow+Condensed:wght@600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#18181a;
+    --panel:#232326;
+    --panel-2:#1e1e20;
+    --line:#38383c;
+    --text:#ededec;
+    --muted:#9a9a9e;
+    --yellow:#f5c518;
+    --red:#e2482f;
+    --green:#5fb37b;
+    --blue:#5b9bd5;
+  }
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+  html{-webkit-text-size-adjust:100%;}
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--text);
+    font-family:'Space Mono', monospace;
+    padding:20px 12px 90px;
+  }
+  .wrap{max-width:760px;margin:0 auto;}
+
+  header{
+    border-bottom:3px solid var(--yellow);
+    padding-bottom:12px;
+    margin-bottom:14px;
+  }
+  .title-block{display:flex;align-items:center;gap:10px;flex-wrap:wrap;}
+  h1{
+    font-family:'Barlow Condensed', sans-serif;
+    font-weight:800;
+    font-size:32px;
+    letter-spacing:0.5px;
+    margin:0;
+    text-transform:uppercase;
+    color:var(--yellow);
+  }
+  .tag{
+    font-family:'Barlow Condensed', sans-serif;
+    font-weight:600;
+    font-size:12px;
+    letter-spacing:2px;
+    text-transform:uppercase;
+    color:var(--muted);
+    border:1px solid var(--line);
+    padding:3px 7px;
+    border-radius:2px;
+  }
+  .print-btn{
+    margin-left:auto;
+    font-family:'Barlow Condensed', sans-serif;
+    font-weight:700;
+    letter-spacing:1px;
+    text-transform:uppercase;
+    font-size:13px;
+    background:var(--yellow);
+    color:#111;
+    border:none;
+    padding:7px 16px;
+    border-radius:4px;
+    cursor:pointer;
+  }
+  .print-btn:active{opacity:0.85;}
+  .subtitle{
+    font-size:11.5px;
+    color:var(--muted);
+    line-height:1.5;
+    margin-top:10px;
+  }
+
+  details.ref{
+    background:var(--panel);
+    border:1px solid var(--line);
+    border-radius:6px;
+    margin-bottom:16px;
+    overflow:hidden;
+  }
+  details.ref summary{
+    font-family:'Barlow Condensed', sans-serif;
+    font-weight:700;
+    font-size:14px;
+    letter-spacing:1.5px;
+    text-transform:uppercase;
+    padding:12px 14px;
+    cursor:pointer;
+    color:var(--yellow);
+    list-style:none;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+  }
+  details.ref summary::-webkit-details-marker{display:none;}
+  details.ref summary::after{content:'+';font-size:18px;color:var(--muted);}
+  details.ref[open] summary::after{content:'−';}
+  .ref-body{
+    padding:0 14px 12px;
+    display:grid;
+    gap:10px;
+  }
+  .ref-body .card{
+    border-top:1px solid var(--line);
+    padding-top:10px;
+    font-size:11px;
+    color:var(--muted);
+    line-height:1.55;
+  }
+  .ref-body .card b{color:var(--text);font-family:'Barlow Condensed',sans-serif;font-size:12.5px;letter-spacing:0.5px;text-transform:uppercase;display:block;margin-bottom:3px;}
+  .ref-body .card.flash{
+    animation:refflash 1.6s ease-out;
+  }
+  @keyframes refflash{
+    0%{background:rgba(245,197,24,0.18);}
+    100%{background:transparent;}
+  }
+  .ref-link{
+    display:inline-block;
+    color:var(--yellow);
+    cursor:pointer;
+    font-size:11px;
+    margin-left:4px;
+    text-decoration:none;
+    border:1px solid var(--line);
+    border-radius:3px;
+    padding:0 4px;
+    line-height:1.4;
+  }
+  .ref-link:active{border-color:var(--yellow);}
+
+  .rate-bar{
+    background:var(--panel);
+    border:1px solid var(--yellow);
+    border-radius:6px;
+    padding:12px 14px;
+    margin-bottom:16px;
+  }
+  .contract-date-banner{
+    display:flex;
+    gap:10px;
+    align-items:flex-start;
+    background:rgba(95,179,123,0.10);
+    border:1px solid var(--green);
+    border-radius:6px;
+    padding:11px 13px;
+    margin-bottom:16px;
+  }
+  .cdb-icon{
+    color:var(--green);
+    font-size:16px;
+    line-height:1.4;
+    flex-shrink:0;
+  }
+  .cdb-text{
+    font-size:11.5px;
+    color:var(--text);
+    line-height:1.55;
+  }
+  .cdb-text b{color:var(--green);}
+  .rate-bar .rb-title{
+    font-family:'Barlow Condensed', sans-serif;
+    font-weight:700;
+    font-size:13px;
+    letter-spacing:1.5px;
+    text-transform:uppercase;
+    color:var(--yellow);
+    margin-bottom:8px;
+  }
+  .rate-bar .rb-fields{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    flex-wrap:wrap;
+  }
+  .rate-bar label{font-size:11px;color:var(--muted);}
+  .rate-bar input{
+    background:#111113;
+    border:1px solid var(--line);
+    color:var(--text);
+    font-family:'Space Mono', monospace;
+    font-size:16px;
+    padding:8px 6px;
+    border-radius:4px;
+    text-align:center;
+    width:84px;
+  }
+  .rate-bar input:focus{outline:none;border-color:var(--yellow);}
+  .rate-bar .slash{color:var(--muted);font-size:16px;}
+  .hourly-out{margin-left:auto;text-align:right;}
+  .hourly-out .label{font-size:10px;color:var(--muted);letter-spacing:1px;text-transform:uppercase;}
+  .hourly-out .value{font-size:18px;font-weight:700;color:var(--green);}
+
+  .day-card{
+    background:var(--panel);
+    border:1px solid var(--line);
+    border-radius:8px;
+    margin-bottom:14px;
+    overflow:hidden;
+  }
+  .day-card.is-off{opacity:0.55;}
+  .day-head{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    padding:10px 12px;
+    background:var(--panel-2);
+    border-bottom:1px solid var(--line);
+    flex-wrap:wrap;
+  }
+  .day-head input.day-date{
+    background:#111113;
+    border:1px solid var(--line);
+    color:var(--yellow);
+    font-family:'Space Mono', monospace;
+    font-size:13px;
+    padding:6px;
+    border-radius:4px;
+    color-scheme:dark;
+  }
+  .day-head input.day-date:focus{outline:none;border-color:var(--yellow);}
+  .day-head input.day-date.locked{
+    color:var(--muted);
+    border-color:transparent;
+    background:transparent;
+    cursor:default;
+  }
+  .date-badge{
+    font-family:'Barlow Condensed', sans-serif;
+    font-weight:600;
+    font-size:9.5px;
+    letter-spacing:1px;
+    text-transform:uppercase;
+    color:var(--muted);
+    border:1px solid var(--line);
+    border-radius:3px;
+    padding:2px 5px;
+  }
+  .day-head select{
+    background:#111113;
+    border:1px solid var(--line);
+    color:var(--text);
+    font-family:'Space Mono', monospace;
+    font-size:12px;
+    padding:6px;
+    border-radius:4px;
+  }
+  .day-head select:focus{outline:none;border-color:var(--yellow);}
+  .off-toggle{
+    display:flex;
+    align-items:center;
+    gap:5px;
+    font-family:'Barlow Condensed', sans-serif;
+    font-weight:600;
+    font-size:12px;
+    letter-spacing:1px;
+    text-transform:uppercase;
+    color:var(--muted);
+    cursor:pointer;
+    user-select:none;
+  }
+  .off-toggle input{width:17px;height:17px;accent-color:var(--blue);}
+  .remove-btn{
+    margin-left:auto;
+    background:none;
+    border:1px solid var(--line);
+    color:var(--muted);
+    width:30px;height:30px;
+    border-radius:4px;
+    cursor:pointer;
+    font-size:15px;
+    line-height:1;
+    flex-shrink:0;
+  }
+  .remove-btn:active{border-color:var(--red);color:var(--red);}
+
+  .card-body{display:block;}
+  .day-card.is-off .card-body{display:none;}
+  .off-note{
+    display:none;
+    padding:12px;
+    font-size:12px;
+    color:var(--blue);
+    font-family:'Barlow Condensed', sans-serif;
+    font-weight:600;
+    letter-spacing:1px;
+    text-transform:uppercase;
+  }
+  .day-card.is-off .off-note{display:block;}
+
+  .fields{
+    display:grid;
+    grid-template-columns:repeat(2, 1fr);
+    gap:10px;
+    padding:12px;
+  }
+  @media(min-width:560px){
+    .fields{grid-template-columns:repeat(4, 1fr);}
+  }
+  .field label{
+    display:block;
+    font-family:'Barlow Condensed', sans-serif;
+    font-weight:600;
+    font-size:11px;
+    letter-spacing:1px;
+    text-transform:uppercase;
+    color:var(--muted);
+    margin-bottom:4px;
+  }
+  .field input{
+    width:100%;
+    background:#111113;
+    border:1px solid var(--line);
+    color:var(--text);
+    font-family:'Space Mono', monospace;
+    font-size:16px;
+    padding:10px 8px;
+    border-radius:4px;
+    text-align:center;
+  }
+  .field input:focus{outline:none;border-color:var(--yellow);}
+  .clock-hint{
+    font-size:10px;
+    color:var(--muted);
+    margin-top:3px;
+    min-height:12px;
+    text-align:center;
+  }
+
+  .meal-toggles{
+    padding:0 12px 10px;
+    display:flex;
+    flex-direction:column;
+    gap:8px;
+  }
+  .mt-row{
+    display:flex;
+    align-items:flex-start;
+    gap:8px;
+    font-size:12px;
+    color:var(--muted);
+    cursor:pointer;
+    line-height:1.4;
+  }
+  .mt-row input{width:20px;height:20px;accent-color:var(--yellow);flex-shrink:0;margin-top:1px;}
+  .ndb-call-wrap{
+    display:none;
+    align-items:center;
+    gap:8px;
+    padding-left:28px;
+    font-size:12px;
+    color:var(--muted);
+  }
+  .ndb-call-wrap.show{display:flex;}
+  .ndb-call-wrap input{
+    width:70px;
+    background:#111113;
+    border:1px solid var(--line);
+    color:var(--text);
+    font-family:'Space Mono', monospace;
+    font-size:14px;
+    padding:6px;
+    border-radius:4px;
+    text-align:center;
+  }
+  .ndb-call-wrap input:focus{outline:none;border-color:var(--yellow);}
+  .ndb-call-wrap .clock-hint{min-height:0;margin-top:0;}
+
+  .day-results{
+    display:grid;
+    grid-template-columns:repeat(5,1fr);
+    border-top:1px solid var(--line);
+  }
+  .portal-row{
+    padding:0 12px 10px;
+  }
+  .portal-label{
+    font-family:'Barlow Condensed', sans-serif;
+    font-weight:600;
+    font-size:11px;
+    letter-spacing:1px;
+    text-transform:uppercase;
+    color:var(--blue);
+    margin-bottom:6px;
+  }
+  .portal-label span{
+    font-family:'Space Mono', monospace;
+    font-weight:400;
+    font-size:9.5px;
+    letter-spacing:0;
+    text-transform:none;
+    color:var(--muted);
+  }
+  .portal-fields{
+    display:grid;
+    grid-template-columns:repeat(2, 1fr);
+    gap:10px;
+  }
+  .zone-row{
+    padding:0 12px 10px;
+  }
+  .zone-fields{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:10px;
+    align-items:end;
+  }
+  .zone-pay-out{
+    text-align:center;
+    padding-bottom:8px;
+  }
+  .zone-pay-out .label{
+    font-family:'Barlow Condensed', sans-serif;
+    font-weight:600;
+    font-size:10px;
+    letter-spacing:1px;
+    text-transform:uppercase;
+    color:var(--muted);
+  }
+  .zone-pay-out .value{
+    font-family:'Barlow Condensed', sans-serif;
+    font-weight:800;
+    font-size:18px;
+    color:var(--green);
+    margin-top:2px;
+  }
+  .dr.hrs .value{color:var(--text);}
+  .dr{
+    padding:10px 6px;
+    text-align:center;
+    border-right:1px solid var(--line);
+  }
+  .dr:last-child{border-right:none;}
+  .dr .label{
+    font-family:'Barlow Condensed', sans-serif;
+    font-weight:600;
+    font-size:10px;
+    letter-spacing:1px;
+    text-transform:uppercase;
+    color:var(--muted);
+  }
+  .dr .value{
+    font-family:'Barlow Condensed', sans-serif;
+    font-weight:800;
+    font-size:18px;
+    margin-top:2px;
+  }
+  .dr .sub{font-size:9px;color:var(--muted);line-height:1.4;margin-top:2px;word-break:break-word;}
+  .dr.mp .value{color:var(--muted);}
+  .dr.mp.hit .value{color:var(--red);}
+  .dr.ta .value{color:var(--muted);}
+  .dr.ta.hit .value{color:var(--blue);}
+  .dr.pay .value{color:var(--green);}
+  .dr.grand .value{color:var(--yellow);}
+
+  .add-btn{
+    font-family:'Barlow Condensed', sans-serif;
+    font-weight:700;
+    letter-spacing:1px;
+    text-transform:uppercase;
+    background:none;
+    border:1px dashed var(--muted);
+    color:var(--text);
+    padding:12px 18px;
+    border-radius:6px;
+    cursor:pointer;
+    font-size:14px;
+    width:100%;
+    margin-bottom:18px;
+  }
+  .add-btn:active{border-color:var(--yellow);color:var(--yellow);}
+
+  /* Week grouping */
+  details.week{
+    border:1px solid var(--line);
+    border-radius:8px;
+    margin-bottom:16px;
+    background:var(--panel-2);
+    overflow:hidden;
+  }
+  details.week > summary{
+    list-style:none;
+    cursor:pointer;
+    display:flex;
+    align-items:center;
+    gap:10px;
+    padding:12px 14px;
+    background:var(--panel-2);
+    user-select:none;
+  }
+  details.week > summary::-webkit-details-marker{display:none;}
+  details.week > summary .wk-caret{
+    color:var(--muted);
+    font-size:12px;
+    transition:transform 0.15s;
+  }
+  details.week[open] > summary .wk-caret{transform:rotate(90deg);}
+  details.week > summary .wk-title{
+    font-family:'Barlow Condensed', sans-serif;
+    font-weight:800;
+    font-size:18px;
+    letter-spacing:1px;
+    text-transform:uppercase;
+    color:var(--yellow);
+  }
+  details.week > summary .wk-sub{
+    margin-left:auto;
+    text-align:right;
+    font-family:'Barlow Condensed', sans-serif;
+    font-weight:700;
+    font-size:14px;
+    color:var(--text);
+  }
+  details.week > summary .wk-sub .wk-detail{
+    display:block;
+    font-weight:600;
+    font-size:10px;
+    letter-spacing:0.5px;
+    color:var(--muted);
+  }
+  details.week > summary .wk-remove{
+    background:none;
+    border:1px solid var(--line);
+    color:var(--muted);
+    width:26px;height:26px;
+    border-radius:4px;
+    cursor:pointer;
+    font-size:13px;
+    line-height:1;
+    flex-shrink:0;
+  }
+  details.week > summary .wk-remove:active{border-color:var(--red);color:var(--red);}
+  .week-body{padding:12px 12px 2px;}
+  .wk-capflag{
+    display:none;
+    margin:0 0 12px;
+    background:rgba(226,72,47,0.12);
+    border:1px solid var(--red);
+    color:#f2b3a5;
+    font-size:11.5px;
+    padding:9px 12px;
+    border-radius:4px;
+    line-height:1.5;
+  }
+
+  .totals-bar{
+    position:sticky;
+    bottom:0;
+    background:var(--panel-2);
+    border-top:2px solid var(--yellow);
+    margin:0 -12px;
+    padding:10px 8px calc(10px + env(safe-area-inset-bottom));
+    display:grid;
+    grid-template-columns:repeat(5,1fr);
+    gap:5px;
+  }
+  .tp{text-align:center;min-width:0;}
+  .tp .label{
+    font-family:'Barlow Condensed', sans-serif;
+    font-weight:600;
+    font-size:9px;
+    letter-spacing:0.5px;
+    text-transform:uppercase;
+    color:var(--muted);
+    white-space:nowrap;
+  }
+  .tp .value{
+    font-family:'Barlow Condensed', sans-serif;
+    font-weight:800;
+    font-size:16px;
+    color:var(--text);
+    white-space:nowrap;
+  }
+  .tp .sublabel{
+    font-family:'Barlow Condensed', sans-serif;
+    font-weight:600;
+    font-size:8.5px;
+    letter-spacing:0.3px;
+    color:var(--muted);
+    white-space:nowrap;
+  }
+  .tp.mp .value{color:var(--red);}
+  .tp.ta .value{color:var(--blue);}
+  .tp.pay .value{color:var(--green);}
+  .tp.grand .value{color:var(--yellow);}
+  .tp.blocks.warn .value{color:var(--red);}
+
+  .cap-flag{
+    display:none;
+    margin:0 0 16px;
+    background:rgba(226,72,47,0.12);
+    border:1px solid var(--red);
+    color:#f2b3a5;
+    font-size:12px;
+    padding:10px 14px;
+    border-radius:4px;
+    line-height:1.5;
+  }
+
+  footer{
+    margin-top:24px;
+    font-size:10px;
+    color:var(--muted);
+    border-top:1px solid var(--line);
+    padding-top:14px;
+    line-height:1.6;
+  }
+  footer b{color:var(--text);}
+
+  @media print{
+    @page{ margin:0.5in; }
+    body{ background:#fff; color:#000; padding:0; font-size:11px; }
+    .wrap{max-width:none;}
+    .print-btn, .add-btn, .remove-btn, .ref-link{ display:none !important; }
+    details.ref{ background:#fff; border:1px solid #000; break-inside:avoid; }
+    details.ref summary{ color:#000; }
+    details.ref summary::after{ display:none; }
+    details.ref .ref-body{ display:grid !important; }
+    details.ref .card{ color:#333; border-top:1px solid #999; }
+    details.ref .card b{ color:#000; }
+    header{ border-bottom:2px solid #000; }
+    h1{ color:#000; }
+    .tag{ color:#333; border-color:#999; }
+    .subtitle{ color:#333; }
+    .rate-bar{ border:1px solid #000; background:#fff; break-inside:avoid; }
+    .contract-date-banner{ border:1px solid #000; background:#fff; break-inside:avoid; }
+    .cdb-icon{ color:#000; }
+    .cdb-text{ color:#000; }
+    .cdb-text b{ color:#000; }
+    .rate-bar .rb-title, .hourly-out .value{ color:#000; }
+    .rate-bar input{ background:#fff; color:#000; border:1px solid #999; }
+    .day-card{ background:#fff; border:1px solid #000; break-inside:avoid; page-break-inside:avoid; opacity:1 !important; }
+    details.week{ background:#fff; border:1px solid #000; }
+    details.week > summary{ background:#f0f0f0; border-bottom:1px solid #000; }
+    details.week > summary .wk-title{ color:#000; }
+    details.week > summary .wk-sub{ color:#000; }
+    details.week > summary .wk-sub .wk-detail{ color:#333; }
+    details.week > summary .wk-caret, details.week > summary .wk-remove{ display:none; }
+    .week-body{ display:block !important; }
+    .wk-capflag{ border:1px solid #000; color:#000; background:#fff; }
+    .day-head{ background:#f0f0f0; border-bottom:1px solid #000; }
+    .day-head input.day-date{ background:#fff; color:#000; border:1px solid #999; color-scheme:light; }
+    .day-head input.day-date.locked{ color:#000; border:1px solid #ccc; background:#fff; }
+    .date-badge{ display:none; }
+    .day-head select{ background:#fff; color:#000; border:1px solid #999; }
+    .off-toggle{ color:#333; }
+    .off-note{ color:#333; }
+    .field input{ background:#fff; color:#000; border:1px solid #999; }
+    .field label, .clock-hint{ color:#333; }
+    .meal2-toggle{ color:#333; }
+    .day-results{ border-top:1px solid #000; }
+    .meal-toggles{ color:#333; }
+    .mt-row{ color:#333; }
+    .ndb-call-wrap{ color:#333; }
+    .ndb-call-wrap input{ background:#fff; color:#000; border:1px solid #999; }
+    .portal-label{ color:#333; }
+    .zone-pay-out .value{ color:#000 !important; }
+    .zone-row input{ background:#fff; color:#000; border:1px solid #999; }
+    .portal-label span{ color:#555; }
+    .dr{ border-right:1px solid #999; }
+    .dr .value{ color:#000 !important; }
+    .dr .label, .dr .sub{ color:#333; }
+    .totals-bar{
+      position:static;
+      background:#fff;
+      border:2px solid #000;
+      margin:16px 0 0;
+      padding:12px;
+      break-inside:avoid;
+    }
+    .tp .value{ color:#000 !important; }
+    .tp .label, .tp .sublabel{ color:#333; }
+    footer{ color:#333; border-top:1px solid #000; break-inside:avoid; }
+    footer b{ color:#000; }
+    .cap-flag{ border:1px solid #000; color:#000; background:#fff; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <div class="title-block">
+      <h1>CPA/600</h1>
+      <span class="tag">IATSE 600 · AICP CPA Calc</span>
+      <button id="printBtn" class="print-btn" title="Print / Save as PDF">Print</button>
+    </div>
+    <div class="subtitle">Enter times as decimal hours off your timecard (e.g. 5.5 = 5:30a, 20.7 = 8:42p). For a wrap past midnight, keep adding — 26.0 = 2:00a next day. Set the date on each card and mark days off — turnaround needs both to know your week's shape.</div>
+  </header>
+
+  <div id="jsNotice" style="background:rgba(226,72,47,0.12);border:1px solid #e2482f;border-radius:6px;padding:12px 14px;margin-bottom:16px;font-size:12.5px;line-height:1.6;color:#ededec;">
+    <b style="color:#e2482f;">Seeing this message? Your viewer isn't running this app.</b><br>
+    File previews (iPhone Quick Look, in-app viewers) show the page but don't run its code — no day cards will appear and buttons won't work. <b>Open this file in Safari or Chrome</b>: save it to Files, long-press → Share → open in your browser.
+  </div>
+
+  <div class="contract-date-banner">
+    <div class="cdb-icon">✓</div>
+    <div class="cdb-text">
+      <b>Verified current through Sept 30, 2028.</b>
+      Built on the 2022 CPA text; the 2025–2028 MOA (executed 9/30/25) carries all 2022 provisions forward unchanged except scale rates and benefits. Meal penalty schedule, 20-penalty weekly cap, OT tiers, turnaround/rest rules, and zone/travel provisions confirmed unchanged in the current agreement. Scale rates: see Contract Reference — Year 2 increases (+3.5%) take effect Oct 1, 2026, Year 3 (+3%) Oct 1, 2027.
+    </div>
+  </div>
+
+  <details class="ref">
+    <summary>Contract Reference</summary>
+    <div class="ref-body">
+      <div class="card" id="ref-vintage"><b>Source documents &amp; currency</b>Base text: 2022 CPA. The 2025–2028 MOA (executed 9/30/25, term through 9/30/28) carries all 2022 provisions forward unchanged except scale rates (+4% / +3.5% Oct 1 2026 / +3% Oct 1 2027), benefit contributions (+$5/day/yr), and two side letters (ADR, information exchange). MP schedule, OT tiers, turnaround, and zone/travel language verified current against both the MOA and the official 2025–2028 wage charts.</div>
+      <div class="card" id="ref-scale"><b>2025–2028 scale rates — Outside LA County (hourly)</b>Through 9/30/26 → from 10/1/26: DIT $90.00 → $93.15 · 1st AC $68.33 → $70.72 · 2nd AC $62.74 → $64.94 · Cam Op $94.45 → $97.76 · Sound Mixer $97.43 → $100.84 · Key Grip / CLT $61.15 → $63.29 · Grip / Lighting Tech $52.27 → $54.10. Min call = 8 × hourly. A quoted "day rate / 12" deal converts to hourly via ÷14 — compare that number against scale to see where your deal sits.</div>
+      <div class="card" id="ref-clock"><b>Work clock, minimums &amp; rounding</b>Work time runs set call → set dismissal. Minimum call: 8 work hours (travel-only days: 4-hr min, 8-hr max at straight allowance). All time computed in ¼-hour units — this app rounds worked time and turnaround UP to the next quarter hour (employee-favorable); each card shows your raw logged time next to the billed figure. Overtime premiums never compound.</div>
+      <div class="card" id="ref-meal1"><b>1st meal</b>Due within 6 hrs of call time. Late = penalty from due time to when meal actually started.</div>
+      <div class="card" id="ref-meal2"><b>2nd meal</b>Applies once you work past the 8-hr minimum call (the app auto-checks this from your hours). Due within 6 hrs of the end of the 1st meal. If no 2nd meal was given, delay runs until wrap.</div>
+      <div class="card" id="ref-ndb"><b>NDB — non-deductible breakfast</b>If called in earlier than regular crew call AND given a hot breakfast with time to sit and eat, your 1st meal clock runs from the regular crew call instead of your early call. Toggle it on and enter the regular crew call.</div>
+      <div class="card" id="ref-mprate"><b>MP rate per ½ hr (or fraction)</b>1st: $10 · 2nd: $12.50 · 3rd: $15 · 4th: $20 · 5th+: $25 — each block stacks on top of the last. After 20 violations in a workweek, further ½-hr violations pay one hour of prevailing rate (incl. OT) each — the app flags this but can't compute it.</div>
+      <div class="card" id="ref-rate"><b>Day-rate → hourly</b>Hourly = Day Rate ÷ (8 + (Committed Hrs − 8) × 1.5). $750/12 → 750 ÷ 14 = $53.57/hr.</div>
+      <div class="card" id="ref-ot"><b>OT tiers, Days 1–5</b>0–8h @1x · 8–12h @1.5x · 12–15 work hrs @2x · past 15 work hrs @2.5x · past 18 elapsed hrs @3x</div>
+      <div class="card" id="ref-6th7th"><b>6th / 7th day &amp; holiday</b>6th day: 0–12h @1.5x, beyond @3x. 7th day/holiday: 0–12h @2x, beyond @4x.</div>
+      <div class="card" id="ref-turnaround"><b>Daily rest / turnaround (main CPA)</b>10-hr rest period, measured <b style="display:inline;font-size:11px;">portal to portal</b> — actual departure to actual next report, drive time included (that's what the Portal fields capture; blank portals fall back to set times). Invaded with ≥6 hrs rest given: +1 hr straight time per invaded hour. Under 6 hrs rest: +1 hr straight time for ALL hours worked on the next call.</div>
+      <div class="card" id="ref-weekend"><b>Weekend turnaround</b>54 hrs after a 5-day workweek · 32 hrs after a 6-day workweek, same portal-to-portal basis and infringement payment as daily. The app picks the threshold from the calendar gap between worked days.</div>
+      <div class="card" id="ref-zone"><b>Zone travel</b>30-mile production zone (this job: measured from Lincoln City Hall, 555 S 10th St). Inside the zone, the commute is on you. Outside: travel time beyond the zone edge is paid at 1x as an allowance — but ONLY for pre-call / post-wrap legs. Mid-day company moves are already in your work hours. Mileage (drivers only, own vehicle) is a separate line at the IRS rate: zone-edge miles for reporting out-of-zone, and any required inter-location legs in or out of zone.</div>
+      <div class="card" id="ref-supplement"><b>CPA vs. CPA Supplement — two forks</b>This app uses the main CPA (the conservative fork). A parallel Supplement covers non-BFPE / late-signing companies and is richer for crew: outside-zone travel is paid as WORK TIME (feeds the OT tiers, and doesn't accrue meal penalties) and overnight-location work time runs portal-to-portal with no 1-hr daily travel cap (2022 MOA, Art. XIX Supplement-only modifications). Know which fork a job's benchmark is before invoicing.</div>
+      <div class="card" id="ref-vehicle"><b>When work time ends &amp; vehicle drivers</b>Work time ends at dismissal "or when employee is no longer performing duties or assignments as directed by the Employer" (Art. XIV as amended, 2022 MOA). Securing a production vehicle is a directed duty — drivers are on the clock until the vehicle is parked and locked.</div>
+    </div>
+  </details>
+
+  <div class="rate-bar">
+    <div class="rb-title">Your Rate</div>
+    <div class="rb-fields">
+      <label>$</label>
+      <input type="text" inputmode="decimal" id="globalRate" placeholder="">
+      <span class="slash">/</span>
+      <input type="text" inputmode="decimal" id="globalHrs" placeholder="" style="width:60px;">
+      <label>hrs</label>
+      <div class="hourly-out">
+        <div class="label">Hourly</div>
+        <div class="value" id="globalHourly">—</div>
+      </div>
+    </div>
+  </div>
+
+  <div id="weeks"></div>
+
+  <button class="add-btn" id="addWeek">+ Add Week</button>
+
+  <footer>
+    Based on the Meals (Sections 1–3), Overtime (Section 1), and Rest Periods sections of the main-body CPA commercial production agreement (not the Northeast Corridor Appendix, which uses a different turnaround formula). Assumptions baked in: (1) MP delay blocks stack per the tiered schedule; (2) uncheck the 2nd meal box on short days under minimum call; (3) hourly = day rate ÷ (8 + (committed − 8) × 1.5); (4) work hours = elapsed minus deducted meals, rounded UP to the ¼-hour (employee-favorable; raw logged time shown alongside); (5) turnaround penalty reads "base/OT rate plus an additional hour of straight time for all invaded hours" as +1× straight-time hour per invaded hour stacked on normal pay — payroll may interpret this clause differently, so verify before relying on it; (6) weekend threshold is picked from the calendar gap between worked days (1 day off → 32 hr, 2+ days off → 54 hr) — confirm against your actual workweek definition; (7) turnaround measured portal-to-portal per the contract, using the Portal fields when filled and falling back to set wrap→call when blank. <b>Built by a fellow crew member — verify before you submit.</b>
+  </footer>
+
+  <div class="totals-bar">
+    <div class="tp blocks" id="blockPill">
+      <div class="label">½-hr Viol.</div>
+      <div class="value" id="blockTotal">0</div>
+      <div class="sublabel" id="blockSplit">1st 0 · 2nd 0</div>
+    </div>
+    <div class="tp mp">
+      <div class="label">MP Total</div>
+      <div class="value" id="weekTotal">$0</div>
+      <div class="sublabel" id="mpSplit">1st $0 · 2nd $0</div>
+    </div>
+    <div class="tp ta">
+      <div class="label">Turnaround</div>
+      <div class="value" id="taTotal">$0</div>
+      <div class="sublabel" id="taSub">0 invaded hrs</div>
+    </div>
+    <div class="tp pay">
+      <div class="label">Day Pay</div>
+      <div class="value" id="dayPayTotal">$0</div>
+    </div>
+    <div class="tp grand">
+      <div class="label">Grand Total</div>
+      <div class="value" id="grandWeekTotal">$0</div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+document.getElementById('jsNotice').style.display = 'none';
+
+const RATE = [10, 12.5, 15, 20, 25];
+function rateForBlock(n){ return n <= 4 ? RATE[n-1] : 25; }
+
+function blocksAndCost(delayMin){
+  if(!delayMin || delayMin <= 0) return {blocks:0, cost:0};
+  const blocks = Math.ceil(delayMin/30);
+  let cost = 0;
+  for(let i=1;i<=blocks;i++) cost += rateForBlock(i);
+  return {blocks, cost};
+}
+
+function parseHrs(v){
+  if(v === '' || v === null || v === undefined) return null;
+  const n = parseFloat(v);
+  return isNaN(n) ? null : n;
+}
+
+// Contract computes time in quarter-hour units. We round UP to the next quarter
+// (employee-favorable) for worked time and turnaround invasions. Epsilon guards
+// against float noise so a clean 14.00 doesn't tick up to 14.25.
+function qUp(hours){
+  return Math.ceil((hours - 1e-9) * 4) / 4;
+}
+// Display: always 2 decimals for hours, so readouts never mix 14.0 / 14.00.
+function h2(hours){
+  return hours.toFixed(2);
+}
+// Display: dollars at 2 decimals.
+function d2(dollars){
+  return '$' + dollars.toFixed(2);
+}
+
+function clockLabel(decHrs){
+  if(decHrs === null) return '';
+  let totalMin = Math.round(decHrs * 60);
+  let dayOffset = Math.floor(totalMin / 1440);
+  let m = ((totalMin % 1440) + 1440) % 1440;
+  let hh = Math.floor(m/60);
+  let mm = m % 60;
+  let period = hh >= 12 ? 'p' : 'a';
+  let hh12 = hh % 12; if(hh12 === 0) hh12 = 12;
+  let label = hh12 + ':' + String(mm).padStart(2,'0') + period;
+  if(dayOffset > 0) label += ' (+1)';
+  return label;
+}
+
+function hourlyFromDayRate(dayRate, commitHrs){
+  if(dayRate === null || commitHrs === null || commitHrs <= 0) return null;
+  const stEquiv = commitHrs > 8 ? (8 + (commitHrs - 8) * 1.5) : commitHrs;
+  return dayRate / stEquiv;
+}
+
+function payForDay(workHours, elapsedHours, hourly, dayType){
+  if(hourly === null || workHours <= 0) return {pay:0, note:''};
+  let h = workHours;
+  let pay = 0;
+  let note = '';
+
+  if(dayType === '6th'){
+    const t1 = Math.min(h, 12);
+    const t2 = Math.max(0, h - 12);
+    pay = t1*1.5*hourly + t2*3*hourly;
+    note = `${t1.toFixed(2)}h@1.5x` + (t2>0 ? ` +${t2.toFixed(2)}h@3x` : '');
+  } else if(dayType === '7th'){
+    const t1 = Math.min(h, 12);
+    const t2 = Math.max(0, h - 12);
+    pay = t1*2*hourly + t2*4*hourly;
+    note = `${t1.toFixed(2)}h@2x` + (t2>0 ? ` +${t2.toFixed(2)}h@4x` : '');
+  } else {
+    const t1 = Math.min(h, 8); h -= t1;
+    const t2 = Math.min(h, 4); h -= t2;
+    const t3 = Math.min(h, 3); h -= t3;
+    let remaining = h;
+    const extra18 = Math.max(0, elapsedHours - 18);
+    const t5 = Math.min(remaining, extra18);
+    const t4 = remaining - t5;
+    pay = t1*1*hourly + t2*1.5*hourly + t3*2*hourly + t4*2.5*hourly + t5*3*hourly;
+    let parts = [`${h2(t1)}@1x`];
+    if(t2>0) parts.push(`${h2(t2)}@1.5x`);
+    if(t3>0) parts.push(`${h2(t3)}@2x`);
+    if(t4>0) parts.push(`${h2(t4)}@2.5x`);
+    if(t5>0) parts.push(`${h2(t5)}@3x`);
+    note = parts.join(' ');
+  }
+  return {pay, note};
+}
+
+let cardId = 0;
+let weekId = 0;
+const weeksEl = document.getElementById('weeks');
+const globalRateEl = document.getElementById('globalRate');
+const globalHrsEl = document.getElementById('globalHrs');
+const globalHourlyEl = document.getElementById('globalHourly');
+
+function allCards(){
+  return [...weeksEl.querySelectorAll('.day-card')];
+}
+
+function makeWeek(){
+  weekId++;
+  const wk = document.createElement('details');
+  wk.className = 'week';
+  wk.open = true;
+  wk.innerHTML = `
+    <summary>
+      <span class="wk-caret">▶</span>
+      <span class="wk-title">Week <span class="wk-num"></span></span>
+      <span class="wk-sub"><span class="wk-total">$0.00</span><span class="wk-detail"></span></span>
+      <button class="wk-remove" title="Remove week">✕</button>
+    </summary>
+    <div class="week-body">
+      <div class="wk-capflag">⚠ 20+ ½-hour meal violations in this workweek. Per Meals Section 3, violations past the 20th switch to one hour of prevailing rate (incl. OT) each — not included in the dollar totals since it depends on your rate. Flag for the production office.</div>
+    </div>
+  `;
+  wk.querySelector('.wk-remove').addEventListener('click', (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    wk.remove();
+    renumberWeeks();
+    computeAll();
+  });
+  weeksEl.appendChild(wk);
+  const body = wk.querySelector('.week-body');
+  for(let i = 0; i < 7; i++) makeCard(body);
+  refreshDateLocks(body);
+  cascadeWeekDates(body);
+  renumberWeeks();
+  return wk;
+}
+
+// First card's date is editable; days 2..n are locked, derived fields.
+function refreshDateLocks(weekBody){
+  const cards = [...weekBody.querySelectorAll('.day-card')];
+  cards.forEach((card, i) => {
+    const df = card.querySelector('[data-field="date"]');
+    const dayHead = card.querySelector('.day-head');
+    let badge = dayHead.querySelector('.date-badge');
+    if(i === 0){
+      df.readOnly = false;
+      df.classList.remove('locked');
+      df.title = 'Week start — sets all 7 days';
+      if(badge) badge.remove();
+    } else {
+      df.readOnly = true;
+      df.classList.add('locked');
+      df.title = 'Auto-set from week start date';
+      if(!badge){
+        badge = document.createElement('span');
+        badge.className = 'date-badge';
+        badge.textContent = 'auto';
+        df.insertAdjacentElement('afterend', badge);
+      }
+    }
+  });
+}
+
+function renumberWeeks(){
+  [...weeksEl.querySelectorAll('details.week')].forEach((wk, i) => {
+    wk.querySelector('.wk-num').textContent = i + 1;
+  });
+}
+
+function currentHourly(){
+  return hourlyFromDayRate(parseHrs(globalRateEl.value), parseHrs(globalHrsEl.value));
+}
+
+// Open the contract reference, scroll to the relevant card, flash it
+function jumpToRef(id){
+  const ref = document.querySelector('details.ref');
+  ref.open = true;
+  const card = document.getElementById(id);
+  if(!card) return;
+  card.scrollIntoView({behavior:'smooth', block:'center'});
+  card.classList.remove('flash');
+  void card.offsetWidth;
+  card.classList.add('flash');
+}
+
+[globalRateEl, globalHrsEl].forEach(el => {
+  el.addEventListener('input', () => {
+    const h = currentHourly();
+    globalHourlyEl.textContent = h !== null ? '$' + h.toFixed(2) : '—';
+    computeAll();
+  });
+});
+
+function makeCard(parentBody){
+  cardId++;
+  const div = document.createElement('div');
+  div.className = 'day-card';
+  div.dataset.id = cardId;
+  div.innerHTML = `
+    <div class="day-head">
+      <input type="date" class="day-date" data-field="date">
+      <select data-field="daytype">
+        <option value="reg" selected>Day 1–5</option>
+        <option value="6th">6th Day</option>
+        <option value="7th">7th/Holiday</option>
+      </select>
+      <label class="off-toggle"><input type="checkbox" data-field="dayoff"> Day Off</label>
+      <button class="remove-btn" title="Remove day">✕</button>
+    </div>
+    <div class="off-note">Rest day — counts toward turnaround gaps, no pay or penalties.</div>
+    <div class="card-body">
+      <div class="fields">
+        <div class="field">
+          <label>Call <span class="ref-link" onclick="jumpToRef('ref-clock')">§</span></label>
+          <input type="text" inputmode="decimal" data-field="call">
+          <div class="clock-hint" data-hint="call"></div>
+        </div>
+        <div class="field">
+          <label>1st Meal Out <span class="ref-link" onclick="jumpToRef('ref-meal1')">§</span></label>
+          <input type="text" inputmode="decimal" data-field="m1out">
+          <div class="clock-hint" data-hint="m1out"></div>
+        </div>
+        <div class="field">
+          <label>1st Meal In <span class="ref-link" onclick="jumpToRef('ref-meal1')">§</span></label>
+          <input type="text" inputmode="decimal" data-field="m1in">
+          <div class="clock-hint" data-hint="m1in"></div>
+        </div>
+        <div class="field">
+          <label>Wrap <span class="ref-link" onclick="jumpToRef('ref-clock')">§</span></label>
+          <input type="text" inputmode="decimal" data-field="wrap">
+          <div class="clock-hint" data-hint="wrap"></div>
+        </div>
+        <div class="field">
+          <label>2nd Meal Out <span class="ref-link" onclick="jumpToRef('ref-meal2')">§</span></label>
+          <input type="text" inputmode="decimal" data-field="m2out">
+          <div class="clock-hint" data-hint="m2out"></div>
+        </div>
+        <div class="field">
+          <label>2nd Meal In <span class="ref-link" onclick="jumpToRef('ref-meal2')">§</span></label>
+          <input type="text" inputmode="decimal" data-field="m2in">
+          <div class="clock-hint" data-hint="m2in"></div>
+        </div>
+      </div>
+      <div class="meal-toggles">
+        <label class="mt-row">
+          <input type="checkbox" data-field="m2applies" checked id="m2-${cardId}">
+          <span data-field="m2label">2nd meal applies — auto (over 8h work)</span> <span class="ref-link" onclick="event.preventDefault();jumpToRef('ref-meal2')">§</span>
+        </label>
+        <label class="mt-row">
+          <input type="checkbox" data-field="ndb" id="ndb-${cardId}">
+          <span>NDB — hot non-deductible breakfast given before regular call</span> <span class="ref-link" onclick="event.preventDefault();jumpToRef('ref-ndb')">§</span>
+        </label>
+        <div class="ndb-call-wrap" data-field="ndbwrap">
+          <label>Regular crew call:</label>
+          <input type="text" inputmode="decimal" data-field="crewcall" placeholder="e.g. 7.0">
+          <span class="clock-hint" data-hint="crewcall"></span>
+        </div>
+      </div>
+      <div class="portal-row">
+        <div class="portal-label">Portal times <span class="ref-link" onclick="jumpToRef('ref-turnaround')">§</span> <span>(for turnaround — actual leave/arrive, incl. drive)</span></div>
+        <div class="portal-fields">
+          <div class="field">
+            <label>Portal Out</label>
+            <input type="text" inputmode="decimal" data-field="pout">
+            <div class="clock-hint" data-hint="pout"></div>
+          </div>
+          <div class="field">
+            <label>Portal In (next report)</label>
+            <input type="text" inputmode="decimal" data-field="pin">
+            <div class="clock-hint" data-hint="pin"></div>
+          </div>
+        </div>
+      </div>
+      <div class="zone-row">
+        <div class="portal-label">Zone travel <span class="ref-link" onclick="jumpToRef('ref-zone')">§</span> <span>(billable hrs beyond the 30-mi zone — pre-call / post-wrap legs only, at 1× rate)</span></div>
+        <div class="zone-fields">
+          <div class="field">
+            <label>Zone Travel Hrs</label>
+            <input type="text" inputmode="decimal" data-field="zonehrs" placeholder="e.g. 2.0">
+          </div>
+          <div class="zone-pay-out">
+            <div class="label">Pays</div>
+            <div class="value" data-field="zonepay">—</div>
+          </div>
+        </div>
+      </div>
+      <div class="day-results">
+        <div class="dr hrs">
+          <div class="label">Total Hrs <span class="ref-link" onclick="jumpToRef('ref-clock')">§</span></div>
+          <div class="value" data-field="hrsval">—</div>
+          <div class="sub" data-field="hrssub"></div>
+        </div>
+        <div class="dr mp" data-field="mpcell">
+          <div class="label">Meal Pen. <span class="ref-link" onclick="jumpToRef('ref-mprate')">§</span></div>
+          <div class="value" data-field="mpval">$0</div>
+          <div class="sub" data-field="mpsub"></div>
+        </div>
+        <div class="dr ta" data-field="tacell">
+          <div class="label">Turnaround <span class="ref-link" onclick="jumpToRef('ref-turnaround')">§</span></div>
+          <div class="value" data-field="taval">—</div>
+          <div class="sub" data-field="tasub"></div>
+        </div>
+        <div class="dr pay">
+          <div class="label">Day Pay <span class="ref-link" onclick="jumpToRef('ref-ot')">§</span></div>
+          <div class="value" data-field="payval">—</div>
+          <div class="sub" data-field="paysub"></div>
+        </div>
+        <div class="dr grand">
+          <div class="label">Day Total</div>
+          <div class="value" data-field="grandval">—</div>
+        </div>
+      </div>
+    </div>
+  `;
+  parentBody.appendChild(div);
+  div.querySelectorAll('input').forEach(inp => {
+    inp.addEventListener('input', computeAll);
+    inp.addEventListener('change', computeAll);
+  });
+  div.querySelectorAll('select').forEach(sel => {
+    sel.addEventListener('change', computeAll);
+  });
+  const dateInput = div.querySelector('[data-field="date"]');
+  dateInput.addEventListener('change', () => autofillWeekDates(div));
+  const m2box = div.querySelector('[data-field="m2applies"]');
+  m2box.addEventListener('change', () => { div.dataset.m2manual = '1'; computeAll(); });
+  div.querySelector('.remove-btn').addEventListener('click', () => {
+    const weekBody = div.closest('.week-body');
+    div.remove();
+    if(weekBody){ refreshDateLocks(weekBody); cascadeWeekDates(weekBody); }
+    computeAll();
+  });
+}
+
+// The first card in each week owns the editable date. Days 2-7 are locked and
+// always derive as consecutive calendar dates from it — updating live when the
+// start date changes, the way a printed 7-day timecard lays out the whole week.
+function autofillWeekDates(sourceCard){
+  const weekBody = sourceCard.closest('.week-body');
+  if(!weekBody) return;
+  cascadeWeekDates(weekBody);
+}
+
+function cascadeWeekDates(weekBody){
+  const cards = [...weekBody.querySelectorAll('.day-card')];
+  if(cards.length === 0) return;
+  const firstDate = cards[0].querySelector('[data-field="date"]').value;
+  const base = firstDate ? new Date(firstDate + 'T00:00:00') : null;
+  let changed = false;
+  for(let i = 1; i < cards.length; i++){
+    const df = cards[i].querySelector('[data-field="date"]');
+    const newVal = base ? new Date(base.getTime() + i * 86400000).toISOString().slice(0, 10) : '';
+    if(df.value !== newVal){ df.value = newVal; changed = true; }
+  }
+  if(changed) computeAll();
+}
+
+// Phase 1: per-card MP + base pay (no turnaround yet)
+function computeCardBase(div){
+  const get = f => div.querySelector(`[data-field="${f}"]`).value;
+  const isOff = div.querySelector('[data-field="dayoff"]').checked;
+  div.classList.toggle('is-off', isOff);
+
+  const call = parseHrs(get('call'));
+  const m1out = parseHrs(get('m1out'));
+  const m1in = parseHrs(get('m1in'));
+  const m2out = parseHrs(get('m2out'));
+  const m2in = parseHrs(get('m2in'));
+  const wrap = parseHrs(get('wrap'));
+  const pout = parseHrs(get('pout'));
+  const pin = parseHrs(get('pin'));
+  const zonehrs = parseHrs(get('zonehrs'));
+  const ndb = div.querySelector('[data-field="ndb"]').checked;
+  const crewcall = parseHrs(get('crewcall'));
+  const dateStr = get('date');
+
+  // Show/hide the regular-crew-call input based on NDB toggle
+  div.querySelector('[data-field="ndbwrap"]').classList.toggle('show', ndb);
+
+  ['call','m1out','m1in','m2out','m2in','wrap','pout','pin','crewcall'].forEach(f=>{
+    const hint = div.querySelector(`[data-hint="${f}"]`);
+    if(!hint) return;
+    const val = {call, m1out, m1in, m2out, m2in, wrap, pout, pin, crewcall}[f];
+    hint.textContent = val === null ? '' : clockLabel(val);
+  });
+
+  if(isOff){
+    Object.assign(div.dataset, {blocks1:0, blocks2:0, cost1:0, cost2:0, blocks:0, cost:0, daypay:0, tapay:0, tahours:0, workhours:0, zonepay:0});
+    div._info = {isOff:true, dateStr};
+    return;
+  }
+
+  // --- Work hours computed first (needed to auto-decide 2nd meal) ---
+  let workHours = 0, elapsedHours = 0;
+  let workHoursRaw = 0;
+  if(call !== null && wrap !== null){
+    elapsedHours = (wrap*60 - call*60) / 60;
+    let mealMin = 0;
+    if(m1out !== null && m1in !== null) mealMin += (m1in - m1out) * 60;
+    if(m2out !== null && m2in !== null) mealMin += (m2in - m2out) * 60;
+    workHoursRaw = elapsedHours - (mealMin / 60);
+    workHours = qUp(workHoursRaw);
+  }
+
+  // --- 2nd meal auto-decision: applies when work exceeds the 8h minimum call ---
+  // Checkbox is the override; auto-check it from work hours unless the user unchecked manually.
+  const m2box = div.querySelector('[data-field="m2applies"]');
+  const m2label = div.querySelector('[data-field="m2label"]');
+  if(!div.dataset.m2manual){
+    m2box.checked = workHours > 8;
+  }
+  const m2applies = m2box.checked;
+  m2label.textContent = div.dataset.m2manual
+    ? '2nd meal applies — manual override'
+    : `2nd meal applies — auto (${workHours > 8 ? 'over' : 'under'} 8h work)`;
+
+  let blocks1 = 0, cost1 = 0, blocks2 = 0, cost2 = 0;
+
+  // First meal due: 6h after call — OR, with a valid NDB, 6h after the REGULAR crew call.
+  if(call !== null && m1out !== null){
+    const clockStart = (ndb && crewcall !== null) ? crewcall : call;
+    const due1 = clockStart*60 + 360;
+    const delay1 = (m1out*60) - due1;
+    const r1 = blocksAndCost(delay1);
+    blocks1 = r1.blocks; cost1 = r1.cost;
+  }
+
+  if(m2applies && m1in !== null){
+    const due2 = m1in*60 + 360;
+    let delay2 = null;
+    if(m2out !== null){
+      delay2 = (m2out*60) - due2;
+    } else if(wrap !== null){
+      delay2 = (wrap*60) - due2;
+    }
+    if(delay2 !== null){
+      const r2 = blocksAndCost(delay2);
+      blocks2 = r2.blocks; cost2 = r2.cost;
+    }
+  }
+
+  const totalBlocks = blocks1 + blocks2;
+  const totalCost = cost1 + cost2;
+
+  const mpCell = div.querySelector('[data-field="mpcell"]');
+  mpCell.className = 'dr mp' + (totalCost > 0 ? ' hit' : '');
+  div.querySelector('[data-field="mpval"]').textContent = '$' + totalCost.toFixed(2);
+  const mpSub = div.querySelector('[data-field="mpsub"]');
+  if(totalBlocks === 0){
+    mpSub.textContent = '0 blocks';
+  } else {
+    mpSub.textContent = `1st $${cost1.toFixed(0)} (${blocks1}) · 2nd $${cost2.toFixed(0)} (${blocks2})`;
+  }
+
+  const hourly = currentHourly();
+  const dayType = div.querySelector('[data-field="daytype"]').value;
+
+  let dayPay = 0, payNote = '';
+  if(call !== null && wrap !== null && hourly !== null){
+    const result = payForDay(workHours, elapsedHours, hourly, dayType);
+    dayPay = result.pay;
+    payNote = result.note;
+  }
+
+  const hrsVal = div.querySelector('[data-field="hrsval"]');
+  const hrsSub = div.querySelector('[data-field="hrssub"]');
+  if(call !== null && wrap !== null){
+    hrsVal.textContent = h2(workHours) + 'h';
+    const rounded = Math.abs(workHours - workHoursRaw) > 1e-6;
+    hrsSub.textContent = rounded
+      ? `${h2(workHoursRaw)} logged → ${h2(workHours)} billed (¼-hr up) · ${h2(elapsedHours)} elapsed`
+      : `${h2(elapsedHours)}h elapsed`;
+  } else {
+    hrsVal.textContent = '—';
+    hrsSub.textContent = '';
+  }
+
+  div.querySelector('[data-field="payval"]').textContent = dayPay > 0 ? d2(dayPay) : '—';
+  div.querySelector('[data-field="paysub"]').textContent = payNote;
+
+  // Zone travel: billable hrs beyond the 30-mile zone, paid at 1x straight rate
+  let zonePay = 0;
+  if(zonehrs !== null && zonehrs > 0 && hourly !== null){
+    zonePay = zonehrs * hourly;
+  }
+  const zonePayEl = div.querySelector('[data-field="zonepay"]');
+  if(zonehrs !== null && zonehrs > 0){
+    zonePayEl.textContent = hourly !== null ? d2(zonePay) : h2(zonehrs) + 'h';
+  } else {
+    zonePayEl.textContent = '—';
+  }
+
+  Object.assign(div.dataset, {
+    blocks1, blocks2, cost1, cost2,
+    blocks: totalBlocks, cost: totalCost,
+    daypay: dayPay, workhours: workHours, zonepay: zonePay
+  });
+  div._info = {isOff:false, dateStr, call, wrap, workHours, pout, pin};
+}
+
+// Phase 2: turnaround across sorted worked days
+function computeTurnarounds(){
+  const cards = allCards();
+  const hourly = currentHourly();
+
+  // Reset all TA cells
+  cards.forEach(div => {
+    div.dataset.tapay = 0;
+    div.dataset.tahours = 0;
+    if(div._info && !div._info.isOff){
+      const taCell = div.querySelector('[data-field="tacell"]');
+      taCell.className = 'dr ta';
+      div.querySelector('[data-field="taval"]').textContent = '—';
+      div.querySelector('[data-field="tasub"]').textContent = '';
+    }
+  });
+
+  // Worked days with valid dates + call + wrap. Rest is measured portal-to-portal
+  // (portal-out -> next day's portal-in) per contract; falls back to set wrap/call if portal blank.
+  const worked = cards
+    .filter(d => d._info && !d._info.isOff && d._info.dateStr && d._info.call !== null && d._info.wrap !== null)
+    .map(d => {
+      const dateMs = new Date(d._info.dateStr + 'T00:00:00').getTime();
+      const releaseHr = d._info.pout !== null ? d._info.pout : d._info.wrap;
+      const reportHr = d._info.pin !== null ? d._info.pin : d._info.call;
+      return {
+        div: d,
+        dateMs,
+        callAbs: dateMs + d._info.call * 3600000,
+        releaseAbs: dateMs + releaseHr * 3600000,
+        reportAbs: dateMs + reportHr * 3600000,
+        usedPortal: d._info.pout !== null || d._info.pin !== null,
+        workHours: d._info.workHours
+      };
+    })
+    .sort((a,b) => a.callAbs - b.callAbs);
+
+  for(let i = 1; i < worked.length; i++){
+    const prev = worked[i-1];
+    const cur = worked[i];
+    const restHrs = (cur.reportAbs - prev.releaseAbs) / 3600000;
+    const dayGap = Math.round((cur.dateMs - prev.dateMs) / 86400000);
+
+    let threshold, kind;
+    if(dayGap <= 1){ threshold = 10; kind = 'daily 10h'; }
+    else if(dayGap === 2){ threshold = 32; kind = 'weekend 32h'; }
+    else { threshold = 54; kind = 'weekend 54h'; }
+
+    if(restHrs >= threshold || restHrs < 0) continue;
+
+    let taHours, mode;
+    if(restHrs >= 6){
+      taHours = qUp(threshold - restHrs);
+      mode = 'invaded';
+    } else {
+      taHours = cur.workHours;
+      mode = 'under 6h rest — all worked hrs';
+    }
+
+    const taPay = hourly !== null ? taHours * hourly : 0;
+    const div = cur.div;
+    div.dataset.tapay = taPay;
+    div.dataset.tahours = taHours;
+
+    const basis = (prev.usedPortal || cur.usedPortal) ? 'portal' : 'set times';
+    const taCell = div.querySelector('[data-field="tacell"]');
+    taCell.className = 'dr ta hit';
+    div.querySelector('[data-field="taval"]').textContent = hourly !== null ? d2(taPay) : h2(taHours) + ' hrs';
+    div.querySelector('[data-field="tasub"]').textContent =
+      `${kind}: ${h2(restHrs)}h rest (${basis}) · ${h2(taHours)}h @1x` + (mode.startsWith('under') ? ' — UNDER 6h!' : '');
+  }
+
+  // Day totals
+  cards.forEach(div => {
+    if(!div._info || div._info.isOff) return;
+    const grand = parseFloat(div.dataset.daypay || 0) + parseFloat(div.dataset.cost || 0) + parseFloat(div.dataset.tapay || 0) + parseFloat(div.dataset.zonepay || 0);
+    div.querySelector('[data-field="grandval"]').textContent = grand > 0 ? d2(grand) : '—';
+  });
+}
+
+function computeAll(){
+  allCards().forEach(computeCardBase);
+  computeTurnarounds();
+  computeTotals();
+}
+
+function computeTotals(){
+  let blocks1 = 0, blocks2 = 0, cost1 = 0, cost2 = 0, dayPay = 0, taPay = 0, taHours = 0, zonePay = 0;
+
+  [...weeksEl.querySelectorAll('details.week')].forEach(wk => {
+    let wB1 = 0, wB2 = 0, wC1 = 0, wC2 = 0, wPay = 0, wTa = 0, wZone = 0, wDays = 0;
+    wk.querySelectorAll('.day-card').forEach(div => {
+      wB1 += parseFloat(div.dataset.blocks1 || 0);
+      wB2 += parseFloat(div.dataset.blocks2 || 0);
+      wC1 += parseFloat(div.dataset.cost1 || 0);
+      wC2 += parseFloat(div.dataset.cost2 || 0);
+      wPay += parseFloat(div.dataset.daypay || 0);
+      wTa += parseFloat(div.dataset.tapay || 0);
+      wZone += parseFloat(div.dataset.zonepay || 0);
+      taHours += parseFloat(div.dataset.tahours || 0);
+      if(div._info && !div._info.isOff && div._info.call !== null && div._info.wrap !== null) wDays++;
+    });
+    const wBlocks = wB1 + wB2;
+    const wMp = wC1 + wC2;
+    const wGrand = wMp + wPay + wTa + wZone;
+    wk.querySelector('.wk-total').textContent = '$' + wGrand.toFixed(2);
+    wk.querySelector('.wk-detail').textContent =
+      `${wDays} day${wDays===1?'':'s'} · MP $${wMp.toFixed(0)} · T/A $${wTa.toFixed(0)} · Zone $${wZone.toFixed(0)} · ${wBlocks} viol.`;
+    wk.querySelector('.wk-capflag').style.display = wBlocks >= 20 ? 'block' : 'none';
+
+    blocks1 += wB1; blocks2 += wB2; cost1 += wC1; cost2 += wC2;
+    dayPay += wPay; taPay += wTa; zonePay += wZone;
+  });
+
+  const blocks = blocks1 + blocks2;
+  const cost = cost1 + cost2;
+  document.getElementById('blockTotal').textContent = blocks;
+  document.getElementById('blockSplit').textContent = `1st ${blocks1} · 2nd ${blocks2}`;
+  document.getElementById('weekTotal').textContent = '$' + cost.toFixed(2);
+  document.getElementById('mpSplit').textContent = `1st $${cost1.toFixed(0)} · 2nd $${cost2.toFixed(0)}`;
+  document.getElementById('taTotal').textContent = '$' + taPay.toFixed(2);
+  document.getElementById('taSub').textContent = `${taHours} invaded hrs`;
+  document.getElementById('dayPayTotal').textContent = '$' + dayPay.toFixed(2);
+  document.getElementById('grandWeekTotal').textContent = '$' + (cost + dayPay + taPay + zonePay).toFixed(2);
+  document.getElementById('blockPill').className = 'tp blocks' + (blocks>=20 ? ' warn':'');
+}
+
+document.getElementById('addWeek').addEventListener('click', () => { makeWeek(); computeAll(); });
+
+const refDetails = document.querySelector('details.ref');
+let refWasOpen = false;
+let collapsedWeeks = [];
+document.getElementById('printBtn').addEventListener('click', () => window.print());
+window.addEventListener('beforeprint', () => {
+  refWasOpen = refDetails.open;
+  refDetails.open = true;
+  collapsedWeeks = [...weeksEl.querySelectorAll('details.week:not([open])')];
+  collapsedWeeks.forEach(wk => wk.open = true);
+});
+window.addEventListener('afterprint', () => {
+  refDetails.open = refWasOpen;
+  collapsedWeeks.forEach(wk => wk.open = false);
+  collapsedWeeks = [];
+});
+
+// Seed one full week: 7 blank day cards
+makeWeek();
+computeAll();
+
+// --- iframe auto-resize ---
+// When embedded (e.g. in a Squarespace Code Block via <iframe>), report our
+// height to the parent page so it can size the iframe to fit — no clipping,
+// no dead scrollbar. Harmless when opened directly (no parent listens).
+(function(){
+  if (window.parent === window) return; // not in an iframe; do nothing
+  let lastH = 0;
+  function reportHeight(){
+    const h = Math.ceil(document.documentElement.getBoundingClientRect().height);
+    if (h !== lastH){
+      lastH = h;
+      window.parent.postMessage({ cpa600Height: h }, '*');
+    }
+  }
+  // Report on load, on any interaction, and on a light interval to catch
+  // added weeks / expanded sections without wiring every control.
+  window.addEventListener('load', reportHeight);
+  document.addEventListener('click', () => setTimeout(reportHeight, 60));
+  document.addEventListener('input', () => setTimeout(reportHeight, 60));
+  setInterval(reportHeight, 700);
+  reportHeight();
+})();
+</script>
+</body>
+</html>
