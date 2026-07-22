@@ -57,7 +57,6 @@
     border-radius:2px;
   }
   .print-btn{
-    margin-left:auto;
     font-family:'Barlow Condensed', sans-serif;
     font-weight:700;
     letter-spacing:1px;
@@ -71,6 +70,22 @@
     cursor:pointer;
   }
   .print-btn:active{opacity:0.85;}
+  .coffee-btn{
+    font-family:'Barlow Condensed', sans-serif;
+    font-weight:700;
+    letter-spacing:0.5px;
+    font-size:13px;
+    text-transform:uppercase;
+    text-decoration:none;
+    background:none;
+    color:var(--yellow);
+    border:1px solid var(--yellow);
+    padding:6px 12px;
+    border-radius:4px;
+    margin-left:auto;
+    white-space:nowrap;
+  }
+  .coffee-btn:active{opacity:0.85;}
   .subtitle{
     font-size:11.5px;
     color:var(--muted);
@@ -333,6 +348,26 @@
     min-height:12px;
     text-align:center;
   }
+  .conv-toast{
+    position:absolute;
+    left:0;
+    right:0;
+    margin-top:2px;
+    font-size:10px;
+    font-weight:700;
+    color:#111;
+    background:var(--yellow);
+    border-radius:3px;
+    padding:2px 4px;
+    text-align:center;
+    opacity:0;
+    transform:translateY(-3px);
+    transition:opacity 0.3s, transform 0.3s;
+    pointer-events:none;
+    z-index:5;
+  }
+  .conv-toast.show{opacity:1;transform:translateY(0);}
+  .field{position:relative;}
 
   .split-row{
     display:none;
@@ -675,7 +710,7 @@
     @page{ margin:0.5in; }
     body{ background:#fff; color:#000; padding:0; font-size:11px; }
     .wrap{max-width:none;}
-    .print-btn, .add-btn, .remove-btn, .ref-link{ display:none !important; }
+    .print-btn, .add-btn, .remove-btn, .ref-link, .coffee-btn{ display:none !important; }
     details.ref{ background:#fff; border:1px solid #000; break-inside:avoid; }
     details.ref summary{ color:#000; }
     details.ref summary::after{ display:none; }
@@ -747,6 +782,7 @@
     <div class="title-block">
       <h1>CPA/600</h1>
       <span class="tag">IATSE 600 · AICP CPA Calc</span>
+      <a href="https://venmo.com/codyjonescolor" target="_blank" rel="noopener" class="coffee-btn" title="Tip the developer via Venmo">☕ Buy me a coffee</a>
       <button id="printBtn" class="print-btn" title="Print / Save as PDF">Print</button>
     </div>
     <div class="subtitle">Enter times as decimal hours off your timecard (e.g. 5.5 = 5:30a, 20.7 = 8:42p). For a wrap past midnight, keep adding — 26.0 = 2:00a next day. Set the date on each card and mark days off — turnaround needs both to know your week's shape.</div>
@@ -852,10 +888,70 @@ function blocksAndCost(delayMin){
   return {blocks, cost};
 }
 
+// Detect a clock-style entry (12:30a, 8:42p, 1230, 830) and convert to decimal
+// hours. Returns {dec, label} or null if the input is a normal decimal we leave
+// alone. Never touches bare 1-2 digit numbers or anything with a decimal point.
+function parseClock(raw){
+  if(raw == null) return null;
+  let s = String(raw).trim().toLowerCase().replace(/\s+/g,'');
+  if(s === '' || s.includes('.')) return null; // decimals are left alone
+
+  let ampm = null;
+  if(/[ap]m?$/.test(s)){
+    ampm = s.slice(-2).includes('a') ? 'a' : 'p';
+    s = s.replace(/[ap]m?$/,'');
+  }
+
+  let h, m;
+  if(s.includes(':')){
+    const parts = s.split(':');
+    h = parseInt(parts[0],10); m = parseInt(parts[1]||'0',10);
+  } else if(ampm && /^\d{1,2}$/.test(s)){
+    h = parseInt(s,10); m = 0;
+  } else if(/^\d{3,4}$/.test(s)){
+    const digits = s.padStart(4,'0');
+    h = parseInt(digits.slice(0,2),10); m = parseInt(digits.slice(2),10);
+  } else {
+    return null; // 1-2 bare digits, no colon, no am/pm = decimal hours
+  }
+  if(isNaN(h) || isNaN(m) || m >= 60 || h > 24) return null;
+
+  if(ampm === 'a'){ if(h === 12) h = 0; }
+  else if(ampm === 'p'){ if(h !== 12) h += 12; }
+
+  const dec = Math.round((h + m/60)*100)/100;
+  return { dec, hadAmPm: ampm !== null };
+}
+
 function parseHrs(v){
   if(v === '' || v === null || v === undefined) return null;
   const n = parseFloat(v);
   return isNaN(n) ? null : n;
+}
+
+// Briefly show a small toast under a field noting a clock->decimal conversion.
+function flashConversion(inp, original, dec){
+  const field = inp.closest('.field') || inp.parentElement;
+  if(!field) return;
+  let toast = field.querySelector('.conv-toast');
+  if(!toast){
+    toast = document.createElement('div');
+    toast.className = 'conv-toast';
+    field.appendChild(toast);
+  }
+  let msg = `${original} → ${dec}`;
+  // Flag likely past-midnight ambiguity: a small decimal on a wrap/portal-out
+  // field could mean the next day (e.g. 2am = 26, not 2).
+  const f = inp.getAttribute('data-field');
+  if((f === 'wrap' || f === 'pout' || f === 'dismiss') && dec < 6){
+    msg += ' — past midnight? use ' + (dec + 24);
+  }
+  toast.textContent = msg;
+  toast.classList.remove('show');
+  void toast.offsetWidth;
+  toast.classList.add('show');
+  clearTimeout(toast._t);
+  toast._t = setTimeout(() => toast.classList.remove('show'), 6000);
 }
 
 // Contract computes time in quarter-hour units. We round UP to the next quarter
@@ -1177,6 +1273,22 @@ function makeCard(parentBody){
   div.querySelectorAll('input').forEach(inp => {
     inp.addEventListener('input', computeAll);
     inp.addEventListener('change', computeAll);
+  });
+  // Auto-convert clock-style entries (12:30a, 8:42p, 1230) to decimal hours on blur,
+  // and briefly flash what it did — same transparency rule as ¼-hr rounding.
+  const TIME_FIELDS = ['call','m1out','m1in','wrap','m2out','m2in','pout','pin','crewcall','dismiss','recall'];
+  TIME_FIELDS.forEach(f => {
+    const inp = div.querySelector(`[data-field="${f}"]`);
+    if(!inp) return;
+    inp.addEventListener('blur', () => {
+      const conv = parseClock(inp.value);
+      if(conv){
+        const original = inp.value;
+        inp.value = conv.dec;
+        flashConversion(inp, original, conv.dec);
+        computeAll();
+      }
+    });
   });
   div.querySelectorAll('select').forEach(sel => {
     sel.addEventListener('change', computeAll);
