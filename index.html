@@ -334,6 +334,63 @@
     text-align:center;
   }
 
+  .split-row{
+    display:none;
+    padding:0 12px 10px;
+  }
+  .split-row.show{display:block;}
+  .split-select-row{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    flex-wrap:wrap;
+  }
+  .split-select-label{
+    font-size:12px;
+    color:var(--muted);
+  }
+  .split-select-row select{
+    background:#111113;
+    border:1px solid var(--line);
+    color:var(--text);
+    font-family:'Space Mono', monospace;
+    font-size:12px;
+    padding:6px;
+    border-radius:4px;
+    flex:1;
+    min-width:180px;
+  }
+  .split-select-row select:focus{outline:none;border-color:var(--yellow);}
+  .split-compare{
+    margin-top:10px;
+    font-size:11px;
+    line-height:1.55;
+  }
+  .sc-row{
+    padding:6px 8px;
+    border-left:2px solid var(--line);
+    margin-bottom:4px;
+    color:var(--muted);
+  }
+  .sc-row b{color:var(--text);}
+  .sc-row span{color:var(--muted);}
+  .sc-row.sc-active{
+    border-left-color:var(--yellow);
+    background:rgba(245,197,24,0.06);
+  }
+  .sc-hint{
+    padding:4px 8px;
+    color:var(--muted);
+    font-size:10.5px;
+  }
+  .sc-hint b{color:var(--yellow);}
+  .split-note{
+    padding:0 12px 8px;
+    font-size:11px;
+    line-height:1.5;
+  }
+  .split-note:empty{display:none;}
+
   .meal-toggles{
     padding:0 12px 10px;
     display:flex;
@@ -711,6 +768,7 @@
   <details class="ref">
     <summary>Contract Reference</summary>
     <div class="ref-body">
+      <div class="card" id="ref-split"><b>Split day — dismissed &amp; recalled</b>The CPA has NO same-day dismissal-and-recall mechanism, so a sunrise/sunset day with a real midday release has two defensible billing theories — pick one via the Split dropdown, and give the producer both as options: <b>Position A (paid through)</b> — one continuous day on the OT ladder, no turnaround, arguing there was no genuine dismissal (the gap is just paid time you're owed). <b>Position B (two calls)</b> — each block bills on its own ladder PLUS a turnaround penalty for the sub-10-hr midday gap (under 6 hrs rest → +1 hr straight time for ALL recalled-block hours). The two theories are mutually exclusive — you can't claim "no real dismissal" (A) and "dismissal triggered turnaround" (B) at once. The tool shows both totals so you can choose; often A is both higher and the cleaner argument.</div>
       <div class="card" id="ref-vintage"><b>Source documents &amp; currency</b>Base text: 2022 CPA. The 2025–2028 MOA (executed 9/30/25, term through 9/30/28) carries all 2022 provisions forward unchanged except scale rates (+4% / +3.5% Oct 1 2026 / +3% Oct 1 2027), benefit contributions (+$5/day/yr), and two side letters (ADR, information exchange). MP schedule, OT tiers, turnaround, and zone/travel language verified current against both the MOA and the official 2025–2028 wage charts.</div>
       <div class="card" id="ref-scale"><b>2025–2028 scale rates — Outside LA County (hourly)</b>Through 9/30/26 → from 10/1/26: DIT $90.00 → $93.15 · 1st AC $68.33 → $70.72 · 2nd AC $62.74 → $64.94 · Cam Op $94.45 → $97.76 · Sound Mixer $97.43 → $100.84 · Key Grip / CLT $61.15 → $63.29 · Grip / Lighting Tech $52.27 → $54.10. Min call = 8 × hourly. A quoted "day rate / 12" deal converts to hourly via ÷14 — compare that number against scale to see where your deal sits.</div>
       <div class="card" id="ref-clock"><b>Work clock, minimums &amp; rounding</b>Work time runs set call → set dismissal. Minimum call: 8 work hours (travel-only days: 4-hr min, 8-hr max at straight allowance). All time computed in ¼-hour units — this app rounds worked time and turnaround UP to the next quarter hour (employee-favorable); each card shows your raw logged time next to the billed figure. Overtime premiums never compound.</div>
@@ -1033,6 +1091,31 @@ function makeCard(parentBody){
           <input type="text" inputmode="decimal" data-field="crewcall" placeholder="e.g. 7.0">
           <span class="clock-hint" data-hint="crewcall"></span>
         </div>
+        <div class="split-select-row">
+          <span class="split-select-label">Split day <span class="ref-link" onclick="event.preventDefault();jumpToRef('ref-split')">§</span></span>
+          <select data-field="splitmode">
+            <option value="off" selected>Not a split day</option>
+            <option value="A">Position A — paid through (one continuous day)</option>
+            <option value="B">Position B — two calls + turnaround</option>
+          </select>
+        </div>
+      </div>
+      <div class="split-note" data-field="chronowarn" style="color:var(--red);"></div>
+      <div class="split-row" data-field="splitwrap">
+        <div class="portal-label" style="color:var(--yellow);">Midday gap <span>(dismissal &amp; recall times — used by both positions)</span></div>
+        <div class="portal-fields">
+          <div class="field">
+            <label>Dismissed (AM wrap)</label>
+            <input type="text" inputmode="decimal" data-field="dismiss">
+            <div class="clock-hint" data-hint="dismiss"></div>
+          </div>
+          <div class="field">
+            <label>Recalled (PM call)</label>
+            <input type="text" inputmode="decimal" data-field="recall">
+            <div class="clock-hint" data-hint="recall"></div>
+          </div>
+        </div>
+        <div class="split-compare" data-field="splitcompare"></div>
       </div>
       <div class="portal-row">
         <div class="portal-label">Portal times <span class="ref-link" onclick="jumpToRef('ref-turnaround')">§</span> <span>(for turnaround — actual leave/arrive, incl. drive)</span></div>
@@ -1150,15 +1233,20 @@ function computeCardBase(div){
   const zonehrs = parseHrs(get('zonehrs'));
   const ndb = div.querySelector('[data-field="ndb"]').checked;
   const crewcall = parseHrs(get('crewcall'));
+  const splitmode = div.querySelector('[data-field="splitmode"]').value;
+  const split = splitmode !== 'off';
+  const dismiss = parseHrs(get('dismiss'));
+  const recall = parseHrs(get('recall'));
   const dateStr = get('date');
 
   // Show/hide the regular-crew-call input based on NDB toggle
   div.querySelector('[data-field="ndbwrap"]').classList.toggle('show', ndb);
+  div.querySelector('[data-field="splitwrap"]').classList.toggle('show', split);
 
-  ['call','m1out','m1in','m2out','m2in','wrap','pout','pin','crewcall'].forEach(f=>{
+  ['call','m1out','m1in','m2out','m2in','wrap','pout','pin','crewcall','dismiss','recall'].forEach(f=>{
     const hint = div.querySelector(`[data-hint="${f}"]`);
     if(!hint) return;
-    const val = {call, m1out, m1in, m2out, m2in, wrap, pout, pin, crewcall}[f];
+    const val = {call, m1out, m1in, m2out, m2in, wrap, pout, pin, crewcall, dismiss, recall}[f];
     hint.textContent = val === null ? '' : clockLabel(val);
   });
 
@@ -1206,10 +1294,14 @@ function computeCardBase(div){
   if(m2applies && m1in !== null){
     const due2 = m1in*60 + 360;
     let delay2 = null;
+    // On a split day, the AM block ends at dismissal — the 2nd-meal clock stops
+    // there and does NOT run across the midday gap. A PM-block 2nd meal would
+    // start its own clock from the recall (handled as that block's own meal, if entered).
+    const blockEnd = (split && dismiss !== null) ? dismiss : wrap;
     if(m2out !== null){
       delay2 = (m2out*60) - due2;
-    } else if(wrap !== null){
-      delay2 = (wrap*60) - due2;
+    } else if(blockEnd !== null){
+      delay2 = (blockEnd*60) - due2;
     }
     if(delay2 !== null){
       const r2 = blocksAndCost(delay2);
@@ -1219,6 +1311,18 @@ function computeCardBase(div){
 
   const totalBlocks = blocks1 + blocks2;
   const totalCost = cost1 + cost2;
+
+  // Chronology sanity: on a normal day, times should ascend call <= m1out <= m1in <= wrap.
+  // A meal-in earlier than meal-out (e.g. "3" read as 3:00a after a noon meal-out) means
+  // the entry is wrong or the day should be marked Split. Surface a warning.
+  let chronoWarn = '';
+  if(m1out !== null && m1in !== null && m1in < m1out){
+    chronoWarn = '⚠ meal-in is before meal-out — check times, or mark this a Split day';
+  } else if(wrap !== null && call !== null && wrap < call && !split){
+    chronoWarn = '⚠ wrap is before call — add 24 for past-midnight (e.g. 2am = 26), or mark Split';
+  }
+  const warnEl = div.querySelector('[data-field="chronowarn"]');
+  if(warnEl) warnEl.textContent = chronoWarn;
 
   const mpCell = div.querySelector('[data-field="mpcell"]');
   mpCell.className = 'dr mp' + (totalCost > 0 ? ' hit' : '');
@@ -1240,6 +1344,43 @@ function computeCardBase(div){
     payNote = result.note;
   }
 
+  // --- Split day: compute both positions when dismissed & recalled same day ---
+  // Position A (paid through): the whole day billed continuously — this is what
+  //   dayPay already computes, since no split-day mechanism exists in the CPA.
+  // Position B (two calls + turnaround): AM block + PM block each billed on their
+  //   own OT ladder, plus a turnaround penalty for the sub-10hr midday gap.
+  let splitInfo = null;
+  if(split && call !== null && wrap !== null && dismiss !== null && recall !== null && hourly !== null){
+    // AM block hours (call -> dismiss), PM block hours (recall -> wrap)
+    const amRaw = dismiss - call;
+    const pmRaw = wrap - recall;
+    const amHrs = qUp(amRaw > 0 ? amRaw : 0);
+    const pmHrs = qUp(pmRaw > 0 ? pmRaw : 0);
+    // Each block on its own ladder; elapsed within each block ~= its span
+    const amPay = payForDay(amHrs, amRaw, hourly, dayType).pay;
+    const pmPay = payForDay(pmHrs, pmRaw, hourly, dayType).pay;
+    // Midday gap turnaround: rest = recall - dismiss, threshold 10h
+    const gap = recall - dismiss;
+    let taGapHrs = 0, taGapPay = 0;
+    if(gap > 0 && gap < 10){
+      if(gap >= 6){
+        taGapHrs = qUp(10 - gap);
+      } else {
+        // under 6h rest -> all hours worked in the recalled (PM) block
+        taGapHrs = pmHrs;
+      }
+      taGapPay = taGapHrs * hourly;
+    }
+    const posB = amPay + pmPay + taGapPay;
+    splitInfo = {
+      mode: splitmode,
+      posA: dayPay,
+      posB: posB,
+      amPay, pmPay, taGapPay, taGapHrs, gap,
+      better: posB > dayPay ? 'B' : 'A'
+    };
+  }
+
   const hrsVal = div.querySelector('[data-field="hrsval"]');
   const hrsSub = div.querySelector('[data-field="hrssub"]');
   if(call !== null && wrap !== null){
@@ -1253,8 +1394,38 @@ function computeCardBase(div){
     hrsSub.textContent = '';
   }
 
-  div.querySelector('[data-field="payval"]').textContent = dayPay > 0 ? d2(dayPay) : '—';
-  div.querySelector('[data-field="paysub"]').textContent = payNote;
+  // Choose day pay by selected mode. B's midday-gap turnaround is billed
+  // separately in the turnaround column (Phase 2 reads splitTa), so day pay for
+  // mode B is just the two blocks' work pay — turnaround isn't double-counted.
+  let effectiveDayPay = dayPay;
+  let splitTaPay = 0, splitTaHrs = 0, splitCompareHtml = '';
+  if(splitInfo){
+    if(splitInfo.mode === 'A'){
+      effectiveDayPay = splitInfo.posA;
+    } else if(splitInfo.mode === 'B'){
+      effectiveDayPay = splitInfo.amPay + splitInfo.pmPay; // blocks only
+      splitTaPay = splitInfo.taGapPay;
+      splitTaHrs = splitInfo.taGapHrs;
+    }
+    const aTotal = splitInfo.posA;
+    const bTotal = splitInfo.posB;
+    splitCompareHtml =
+      `<div class="sc-row${splitInfo.mode==='A'?' sc-active':''}"><b>A — paid through:</b> ${d2(aTotal)} <span>(one continuous ${h2(workHours)}h day, no turnaround — argues no real dismissal)</span></div>` +
+      `<div class="sc-row${splitInfo.mode==='B'?' sc-active':''}"><b>B — two calls:</b> ${d2(splitInfo.amPay + splitInfo.pmPay)} work + ${d2(splitInfo.taGapPay)} turnaround (${h2(splitInfo.taGapHrs)}h${splitInfo.gap<6?', under-6h gap → all PM hrs':''}) = ${d2(bTotal)}</div>` +
+      `<div class="sc-hint">Higher: <b>${splitInfo.better}</b> (${d2(Math.max(aTotal,bTotal))}). Pick a position above — the invoice bills that one.</div>`;
+  }
+  const compareEl = div.querySelector('[data-field="splitcompare"]');
+  if(compareEl) compareEl.innerHTML = splitCompareHtml;
+
+  div.querySelector('[data-field="payval"]').textContent = effectiveDayPay > 0 ? d2(effectiveDayPay) : '—';
+  if(splitInfo){
+    div.querySelector('[data-field="paysub"]').textContent =
+      splitInfo.mode === 'A'
+        ? `Position A — paid through, ${h2(workHours)}h continuous`
+        : `Position B — AM+PM blocks (turnaround shown separately)`;
+  } else {
+    div.querySelector('[data-field="paysub"]').textContent = payNote;
+  }
 
   // Zone travel: billable hrs beyond the 30-mile zone, paid at 1x straight rate
   let zonePay = 0;
@@ -1271,7 +1442,8 @@ function computeCardBase(div){
   Object.assign(div.dataset, {
     blocks1, blocks2, cost1, cost2,
     blocks: totalBlocks, cost: totalCost,
-    daypay: dayPay, workhours: workHours, zonepay: zonePay
+    daypay: effectiveDayPay, workhours: workHours, zonepay: zonePay,
+    splitta: splitTaPay, splittahrs: splitTaHrs
   });
   div._info = {isOff:false, dateStr, call, wrap, workHours, pout, pin};
 }
@@ -1347,6 +1519,25 @@ function computeTurnarounds(){
     div.querySelector('[data-field="tasub"]').textContent =
       `${kind}: ${h2(restHrs)}h rest (${basis}) · ${h2(taHours)}h @1x` + (mode.startsWith('under') ? ' — UNDER 6h!' : '');
   }
+
+  // Add split-day (within-day, Position B) turnaround on top of any between-days turnaround
+  cards.forEach(div => {
+    if(!div._info || div._info.isOff) return;
+    const splitTa = parseFloat(div.dataset.splitta || 0);
+    const splitTaHrs = parseFloat(div.dataset.splittahrs || 0);
+    if(splitTa > 0){
+      const priorTa = parseFloat(div.dataset.tapay || 0);
+      const priorHrs = parseFloat(div.dataset.tahours || 0);
+      div.dataset.tapay = priorTa + splitTa;
+      div.dataset.tahours = priorHrs + splitTaHrs;
+      const taCell = div.querySelector('[data-field="tacell"]');
+      taCell.className = 'dr ta hit';
+      div.querySelector('[data-field="taval"]').textContent = d2(priorTa + splitTa);
+      const existing = div.querySelector('[data-field="tasub"]').textContent;
+      const splitLabel = `split recall: ${h2(splitTaHrs)}h @1x`;
+      div.querySelector('[data-field="tasub"]').textContent = existing ? existing + ' + ' + splitLabel : splitLabel;
+    }
+  });
 
   // Day totals
   cards.forEach(div => {
