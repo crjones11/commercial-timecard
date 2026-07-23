@@ -1872,7 +1872,41 @@ function computeTotals(){
   document.getElementById('blockPill').className = 'tp blocks' + (blocks>=20 ? ' warn':'');
 }
 
-document.getElementById('addWeek').addEventListener('click', () => { makeWeek(); computeAll(); });
+// Seed a newly added week with the logical next start date: 7 days after the
+// previous week's start. Remains fully editable — this is just a sensible default
+// so users aren't left with a blank (or today-defaulted) date.
+function nextWeekStartDate(){
+  const weeks = [...weeksEl.querySelectorAll('details.week')];
+  if(weeks.length === 0) return '';
+  // Walk backwards to find the most recent week that actually has a start date
+  for(let i = weeks.length - 1; i >= 0; i--){
+    const firstCard = weeks[i].querySelector('.day-card');
+    if(!firstCard) continue;
+    const v = firstCard.querySelector('[data-field="date"]').value;
+    if(v){
+      const base = new Date(v + 'T00:00:00');
+      // 7 days after that week's start = the following week's start
+      return new Date(base.getTime() + 7 * 86400000).toISOString().slice(0,10);
+    }
+  }
+  return '';
+}
+
+document.getElementById('addWeek').addEventListener('click', () => {
+  const seed = nextWeekStartDate();
+  const wk = makeWeek();
+  if(seed){
+    const firstCard = wk.querySelector('.day-card');
+    if(firstCard){
+      firstCard.querySelector('[data-field="date"]').value = seed;
+      cascadeWeekDates(wk.querySelector('.week-body'));
+    }
+  }
+  computeAll();
+  if(typeof wk.scrollIntoView === 'function'){
+    wk.scrollIntoView({behavior:'smooth', block:'start'});
+  }
+});
 
 const refDetails = document.querySelector('details.ref');
 let refWasOpen = false;
