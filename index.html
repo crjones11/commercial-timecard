@@ -151,6 +151,137 @@
   }
   .ref-link:active{border-color:var(--yellow);}
 
+  .setup-gate{
+    background:var(--panel);
+    border:2px solid var(--yellow);
+    border-radius:8px;
+    padding:16px;
+    margin-bottom:16px;
+  }
+  .setup-gate.done{display:none;}
+  .sg-step{
+    font-family:'Barlow Condensed', sans-serif;
+    font-weight:800;
+    font-size:15px;
+    letter-spacing:1px;
+    text-transform:uppercase;
+    color:var(--yellow);
+    margin-bottom:12px;
+  }
+  .sg-grid{
+    display:grid;
+    grid-template-columns:1fr;
+    gap:14px;
+  }
+  @media(min-width:560px){ .sg-grid{grid-template-columns:1fr 1fr;} }
+  .sg-field label{
+    display:block;
+    font-family:'Barlow Condensed', sans-serif;
+    font-weight:600;
+    font-size:12px;
+    letter-spacing:1px;
+    text-transform:uppercase;
+    color:var(--muted);
+    margin-bottom:5px;
+  }
+  .sg-rate-row{display:flex;align-items:center;gap:6px;}
+  .sg-dollar,.sg-hrs{color:var(--muted);font-size:14px;}
+  .setup-gate input{
+    background:#111113;
+    border:1px solid var(--line);
+    color:var(--text);
+    font-family:'Space Mono', monospace;
+    font-size:16px;
+    padding:10px 8px;
+    border-radius:4px;
+    text-align:center;
+    width:100%;
+    color-scheme:dark;
+  }
+  .sg-rate-row input{width:80px;}
+  .setup-gate input:focus{outline:none;border-color:var(--yellow);}
+  .sg-hint{font-size:10px;color:var(--muted);margin-top:4px;}
+  .sg-footer{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:12px;
+    margin-top:14px;
+    flex-wrap:wrap;
+  }
+  .sg-hourly{
+    font-family:'Barlow Condensed', sans-serif;
+    font-weight:700;
+    font-size:14px;
+    letter-spacing:1px;
+    text-transform:uppercase;
+    color:var(--muted);
+  }
+  .sg-hourly span{color:var(--green);font-size:18px;}
+  .sg-btn{
+    font-family:'Barlow Condensed', sans-serif;
+    font-weight:800;
+    letter-spacing:1px;
+    text-transform:uppercase;
+    font-size:15px;
+    background:var(--yellow);
+    color:#111;
+    border:none;
+    padding:11px 22px;
+    border-radius:5px;
+    cursor:pointer;
+  }
+  .sg-btn:disabled{opacity:0.35;cursor:not-allowed;}
+  .sg-warn{
+    margin-top:10px;
+    font-size:11px;
+    color:var(--muted);
+    line-height:1.5;
+  }
+  .sg-warn.hide{display:none;}
+
+  .rate-summary{
+    display:none;
+    align-items:center;
+    gap:16px;
+    flex-wrap:wrap;
+    background:var(--panel);
+    border:1px solid var(--yellow);
+    border-radius:6px;
+    padding:10px 14px;
+    margin-bottom:16px;
+  }
+  .rate-summary.show{display:flex;}
+  .rs-item{display:flex;align-items:baseline;gap:6px;}
+  .rs-label{
+    font-family:'Barlow Condensed', sans-serif;
+    font-weight:600;
+    font-size:10px;
+    letter-spacing:1px;
+    text-transform:uppercase;
+    color:var(--muted);
+  }
+  .rs-val{
+    font-family:'Space Mono', monospace;
+    font-size:14px;
+    color:var(--text);
+  }
+  .rs-green{color:var(--green);font-weight:700;}
+  .rs-edit{
+    margin-left:auto;
+    font-family:'Barlow Condensed', sans-serif;
+    font-weight:700;
+    letter-spacing:1px;
+    text-transform:uppercase;
+    font-size:12px;
+    background:none;
+    color:var(--yellow);
+    border:1px solid var(--yellow);
+    padding:5px 12px;
+    border-radius:4px;
+    cursor:pointer;
+  }
+
   .rate-bar{
     background:var(--panel);
     border:1px solid var(--yellow);
@@ -347,6 +478,12 @@
     margin-top:3px;
     min-height:12px;
     text-align:center;
+  }
+  .field-subhint{
+    font-size:9px;
+    color:var(--blue);
+    text-align:center;
+    margin-top:1px;
   }
   .conv-toast{
     position:absolute;
@@ -745,7 +882,7 @@
     .off-toggle{ color:#333; }
     .off-note{ color:#333; }
     .field input{ background:#fff; color:#000; border:1px solid #999; }
-    .field label, .clock-hint{ color:#333; }
+    .field label, .clock-hint, .field-subhint{ color:#333; }
     .meal2-toggle{ color:#333; }
     .day-results{ border-top:1px solid #000; }
     .meal-toggles{ color:#333; }
@@ -804,7 +941,7 @@
   <details class="ref">
     <summary>Contract Reference</summary>
     <div class="ref-body">
-      <div class="card" id="ref-split"><b>Split day — dismissed &amp; recalled</b>The CPA has NO same-day dismissal-and-recall mechanism, so a sunrise/sunset day with a real midday release has two defensible billing theories — pick one via the Split dropdown, and give the producer both as options: <b>Position A (paid through)</b> — one continuous day on the OT ladder, no turnaround, arguing there was no genuine dismissal (the gap is just paid time you're owed). <b>Position B (two calls)</b> — each block bills on its own ladder PLUS a turnaround penalty for the sub-10-hr midday gap (under 6 hrs rest → +1 hr straight time for ALL recalled-block hours). The two theories are mutually exclusive — you can't claim "no real dismissal" (A) and "dismissal triggered turnaround" (B) at once. The tool shows both totals so you can choose; often A is both higher and the cleaner argument.</div>
+      <div class="card" id="ref-split"><b>Split call — dismissed &amp; recalled same day</b><i style="display:block;font-size:10px;color:var(--muted);margin-bottom:5px;">Note: this is NOT "splits" in the sense of call times creeping later across a week into a fraturday — that pattern is already handled by the turnaround math, day to day. This is one day with a genuine mid-day dismissal and recall (e.g. sunrise block, released, back for sunset).</i>The CPA has NO same-day dismissal-and-recall mechanism, so such a day has two defensible billing theories — pick one via the Split call dropdown, and give the producer both as options: <b>Position A (paid through)</b> — one continuous day on the OT ladder, no turnaround, arguing there was no genuine dismissal (the gap is just paid time you're owed). <b>Position B (two calls)</b> — each block bills on its own ladder PLUS a turnaround penalty for the sub-10-hr midday gap (under 6 hrs rest → +1 hr straight time for ALL recalled-block hours). The two theories are mutually exclusive — you can't claim "no real dismissal" (A) and "dismissal triggered turnaround" (B) at once. The tool shows both totals so you can choose; often A is both higher and the cleaner argument.</div>
       <div class="card" id="ref-vintage"><b>Source documents &amp; currency</b>Base text: 2022 CPA. The 2025–2028 MOA (executed 9/30/25, term through 9/30/28) carries all 2022 provisions forward unchanged except scale rates (+4% / +3.5% Oct 1 2026 / +3% Oct 1 2027), benefit contributions (+$5/day/yr), and two side letters (ADR, information exchange). MP schedule, OT tiers, turnaround, and zone/travel language verified current against both the MOA and the official 2025–2028 wage charts.</div>
       <div class="card" id="ref-scale"><b>2025–2028 scale rates — Outside LA County (hourly)</b>Through 9/30/26 → from 10/1/26: DIT $90.00 → $93.15 · 1st AC $68.33 → $70.72 · 2nd AC $62.74 → $64.94 · Cam Op $94.45 → $97.76 · Sound Mixer $97.43 → $100.84 · Key Grip / CLT $61.15 → $63.29 · Grip / Lighting Tech $52.27 → $54.10. Min call = 8 × hourly. A quoted "day rate / 12" deal converts to hourly via ÷14 — compare that number against scale to see where your deal sits.</div>
       <div class="card" id="ref-clock"><b>Work clock, minimums &amp; rounding</b>Work time runs set call → set dismissal. Minimum call: 8 work hours (travel-only days: 4-hr min, 8-hr max at straight allowance). All time computed in ¼-hour units — this app rounds worked time and turnaround UP to the next quarter hour (employee-favorable); each card shows your raw logged time next to the billed figure. Overtime premiums never compound.</div>
@@ -815,7 +952,7 @@
       <div class="card" id="ref-rate"><b>Day-rate → hourly</b>Hourly = Day Rate ÷ (8 + (Committed Hrs − 8) × 1.5). $750/12 → 750 ÷ 14 = $53.57/hr.</div>
       <div class="card" id="ref-ot"><b>OT tiers, Days 1–5</b>0–8h @1x · 8–12h @1.5x · 12–15 work hrs @2x · past 15 work hrs @2.5x · past 18 elapsed hrs @3x</div>
       <div class="card" id="ref-6th7th"><b>6th / 7th day &amp; holiday</b>6th day: 0–12h @1.5x, beyond @3x. 7th day/holiday: 0–12h @2x, beyond @4x.</div>
-      <div class="card" id="ref-turnaround"><b>Daily rest / turnaround (main CPA)</b>10-hr rest period, measured <b style="display:inline;font-size:11px;">portal to portal</b> — actual departure to actual next report, drive time included (that's what the Portal fields capture; blank portals fall back to set times). Invaded with ≥6 hrs rest given: +1 hr straight time per invaded hour. Under 6 hrs rest: +1 hr straight time for ALL hours worked on the next call.</div>
+      <div class="card" id="ref-turnaround"><b>Daily rest / turnaround (main CPA)</b>10-hr rest period, measured <b style="display:inline;font-size:11px;">portal to portal</b> — door to door, meaning from when you <b style="display:inline;font-size:11px;">got home</b> one night to when you <b style="display:inline;font-size:11px;">left home</b> the next morning. Your commute is NOT rest, so drive time eats into the 10 hours. Enter "Left home (AM)" and "Got home (PM)" on each day card; if left blank, the tool falls back to set call/wrap (which understates the invasion for anyone with a real commute). Invaded with ≥6 hrs rest given: +1 hr straight time per invaded hour. Under 6 hrs rest: +1 hr straight time for ALL hours worked on the next call.</div>
       <div class="card" id="ref-weekend"><b>Weekend turnaround</b>54 hrs after a 5-day workweek · 32 hrs after a 6-day workweek, same portal-to-portal basis and infringement payment as daily. The app picks the threshold from the calendar gap between worked days.</div>
       <div class="card" id="ref-zone"><b>Zone travel</b>30-mile production zone (this job: measured from Lincoln City Hall, 555 S 10th St). Inside the zone, the commute is on you. Outside: travel time beyond the zone edge is paid at 1x as an allowance — but ONLY for pre-call / post-wrap legs. Mid-day company moves are already in your work hours. Mileage (drivers only, own vehicle) is a separate line at the IRS rate: zone-edge miles for reporting out-of-zone, and any required inter-location legs in or out of zone.</div>
       <div class="card" id="ref-supplement"><b>CPA vs. CPA Supplement — two forks</b>This app uses the main CPA (the conservative fork). A parallel Supplement covers non-BFPE / late-signing companies and is richer for crew: outside-zone travel is paid as WORK TIME (feeds the OT tiers, and doesn't accrue meal penalties) and overnight-location work time runs portal-to-portal with no 1-hr daily travel cap (2022 MOA, Art. XIX Supplement-only modifications). Know which fork a job's benchmark is before invoicing.</div>
@@ -823,24 +960,43 @@
     </div>
   </details>
 
-  <div class="rate-bar">
-    <div class="rb-title">Your Rate</div>
-    <div class="rb-fields">
-      <label>$</label>
-      <input type="text" inputmode="decimal" id="globalRate" placeholder="">
-      <span class="slash">/</span>
-      <input type="text" inputmode="decimal" id="globalHrs" placeholder="" style="width:60px;">
-      <label>hrs</label>
-      <div class="hourly-out">
-        <div class="label">Hourly</div>
-        <div class="value" id="globalHourly">—</div>
+  <div class="setup-gate" id="setupGate">
+    <div class="sg-step">Step 1 — Set up before you enter times</div>
+    <div class="sg-grid">
+      <div class="sg-field">
+        <label>Day rate</label>
+        <div class="sg-rate-row">
+          <span class="sg-dollar">$</span>
+          <input type="text" inputmode="decimal" id="globalRate" placeholder="750">
+          <span class="slash">/</span>
+          <input type="text" inputmode="decimal" id="globalHrs" placeholder="12">
+          <span class="sg-hrs">hrs</span>
+        </div>
+        <div class="sg-hint">Rate as quoted, e.g. 750 / 12</div>
+      </div>
+      <div class="sg-field">
+        <label>Week start date</label>
+        <input type="date" id="setupDate">
+        <div class="sg-hint">First day of this work week</div>
       </div>
     </div>
+    <div class="sg-footer">
+      <div class="sg-hourly">Hourly: <span id="globalHourly">—</span></div>
+      <button class="sg-btn" id="startWeekBtn" disabled>Start timecard →</button>
+    </div>
+    <div class="sg-warn" id="sgWarn">Enter both a rate and a week start date to continue.</div>
   </div>
 
-  <div id="weeks"></div>
+  <div class="rate-summary" id="rateSummary">
+    <div class="rs-item"><span class="rs-label">Rate</span> <span class="rs-val" id="rsRate">—</span></div>
+    <div class="rs-item"><span class="rs-label">Hourly</span> <span class="rs-val rs-green" id="rsHourly">—</span></div>
+    <div class="rs-item"><span class="rs-label">Week of</span> <span class="rs-val" id="rsDate">—</span></div>
+    <button class="rs-edit" id="editSetupBtn">Edit</button>
+  </div>
 
-  <button class="add-btn" id="addWeek">+ Add Week</button>
+  <div id="weeks" style="display:none;"></div>
+
+  <button class="add-btn" id="addWeek" style="display:none;">+ Add Week</button>
 
   <footer>
     Based on the Meals (Sections 1–3), Overtime (Section 1), and Rest Periods sections of the main-body CPA commercial production agreement (not the Northeast Corridor Appendix, which uses a different turnaround formula). Assumptions baked in: (1) MP delay blocks stack per the tiered schedule; (2) uncheck the 2nd meal box on short days under minimum call; (3) hourly = day rate ÷ (8 + (committed − 8) × 1.5); (4) work hours = elapsed minus deducted meals, rounded UP to the ¼-hour (employee-favorable; raw logged time shown alongside); (5) turnaround penalty reads "base/OT rate plus an additional hour of straight time for all invaded hours" as +1× straight-time hour per invaded hour stacked on normal pay — payroll may interpret this clause differently, so verify before relying on it; (6) weekend threshold is picked from the calendar gap between worked days (1 day off → 32 hr, 2+ days off → 54 hr) — confirm against your actual workweek definition; (7) turnaround measured portal-to-portal per the contract, using the Portal fields when filled and falling back to set wrap→call when blank. <b>Built by a fellow crew member — verify before you submit.</b>
@@ -1188,9 +1344,9 @@ function makeCard(parentBody){
           <span class="clock-hint" data-hint="crewcall"></span>
         </div>
         <div class="split-select-row">
-          <span class="split-select-label">Split day <span class="ref-link" onclick="event.preventDefault();jumpToRef('ref-split')">§</span></span>
+          <span class="split-select-label">Split call <span class="ref-link" onclick="event.preventDefault();jumpToRef('ref-split')">§</span></span>
           <select data-field="splitmode">
-            <option value="off" selected>Not a split day</option>
+            <option value="off" selected>Not a split call</option>
             <option value="A">Position A — paid through (one continuous day)</option>
             <option value="B">Position B — two calls + turnaround</option>
           </select>
@@ -1214,17 +1370,19 @@ function makeCard(parentBody){
         <div class="split-compare" data-field="splitcompare"></div>
       </div>
       <div class="portal-row">
-        <div class="portal-label">Portal times <span class="ref-link" onclick="jumpToRef('ref-turnaround')">§</span> <span>(for turnaround — actual leave/arrive, incl. drive)</span></div>
+        <div class="portal-label">Portal times <span class="ref-link" onclick="jumpToRef('ref-turnaround')">§</span> <span>(door-to-door — when you left your home/hotel and when you got back. Rest is measured from tonight's "got home" to tomorrow's "left home.")</span></div>
         <div class="portal-fields">
           <div class="field">
-            <label>Portal Out</label>
-            <input type="text" inputmode="decimal" data-field="pout">
-            <div class="clock-hint" data-hint="pout"></div>
-          </div>
-          <div class="field">
-            <label>Portal In (next report)</label>
+            <label>Left home (AM)</label>
             <input type="text" inputmode="decimal" data-field="pin">
             <div class="clock-hint" data-hint="pin"></div>
+            <div class="field-subhint">≈ at or before Call</div>
+          </div>
+          <div class="field">
+            <label>Got home (PM)</label>
+            <input type="text" inputmode="decimal" data-field="pout">
+            <div class="clock-hint" data-hint="pout"></div>
+            <div class="field-subhint">≈ at or after Wrap</div>
           </div>
         </div>
       </div>
@@ -1312,6 +1470,7 @@ function autofillWeekDates(sourceCard){
   const weekBody = sourceCard.closest('.week-body');
   if(!weekBody) return;
   cascadeWeekDates(weekBody);
+  computeAll();
 }
 
 function cascadeWeekDates(weekBody){
@@ -1319,13 +1478,11 @@ function cascadeWeekDates(weekBody){
   if(cards.length === 0) return;
   const firstDate = cards[0].querySelector('[data-field="date"]').value;
   const base = firstDate ? new Date(firstDate + 'T00:00:00') : null;
-  let changed = false;
   for(let i = 1; i < cards.length; i++){
     const df = cards[i].querySelector('[data-field="date"]');
     const newVal = base ? new Date(base.getTime() + i * 86400000).toISOString().slice(0, 10) : '';
-    if(df.value !== newVal){ df.value = newVal; changed = true; }
+    if(df.value !== newVal) df.value = newVal;
   }
-  if(changed) computeAll();
 }
 
 // Phase 1: per-card MP + base pay (no turnaround yet)
@@ -1406,7 +1563,7 @@ function computeCardBase(div){
   if(m2applies && m1in !== null){
     const due2 = m1in*60 + 360;
     let delay2 = null;
-    // On a split day, the AM block ends at dismissal — the 2nd-meal clock stops
+    // On a split call, the AM block ends at dismissal — the 2nd-meal clock stops
     // there and does NOT run across the midday gap. A PM-block 2nd meal would
     // start its own clock from the recall (handled as that block's own meal, if entered).
     const blockEnd = (split && dismiss !== null) ? dismiss : wrap;
@@ -1429,9 +1586,13 @@ function computeCardBase(div){
   // the entry is wrong or the day should be marked Split. Surface a warning.
   let chronoWarn = '';
   if(m1out !== null && m1in !== null && m1in < m1out){
-    chronoWarn = '⚠ meal-in is before meal-out — check times, or mark this a Split day';
+    chronoWarn = '⚠ meal-in is before meal-out — check times, or mark this a Split call';
   } else if(wrap !== null && call !== null && wrap < call && !split){
-    chronoWarn = '⚠ wrap is before call — add 24 for past-midnight (e.g. 2am = 26), or mark Split';
+    chronoWarn = '⚠ wrap is before call — add 24 for past-midnight (e.g. 2am = 26), or mark Split call';
+  } else if(pin !== null && call !== null && pin > call){
+    chronoWarn = '⚠ "Left home" is after Call — check these. Left home (AM) should be at or before your call; Got home (PM) at or after wrap.';
+  } else if(pout !== null && wrap !== null && pout < wrap){
+    chronoWarn = '⚠ "Got home" is before Wrap — check these. Got home (PM) should be at or after wrap; Left home (AM) at or before your call.';
   }
   const warnEl = div.querySelector('[data-field="chronowarn"]');
   if(warnEl) warnEl.textContent = chronoWarn;
@@ -1456,7 +1617,7 @@ function computeCardBase(div){
     payNote = result.note;
   }
 
-  // --- Split day: compute both positions when dismissed & recalled same day ---
+  // --- Split call: compute both positions when dismissed & recalled same day ---
   // Position A (paid through): the whole day billed continuously — this is what
   //   dayPay already computes, since no split-day mechanism exists in the CPA.
   // Position B (two calls + turnaround): AM block + PM block each billed on their
@@ -1660,6 +1821,11 @@ function computeTurnarounds(){
 }
 
 function computeAll(){
+  // Self-heal date cascades: re-sync every week's locked dates against its first
+  // card every pass. Cheap (cascadeWeekDates no-ops when already correct) and
+  // prevents stale dates if a card was added/edited before the date field itself
+  // was ever blurred — which otherwise silently breaks turnaround's day-sort.
+  [...weeksEl.querySelectorAll('.week-body')].forEach(cascadeWeekDates);
   allCards().forEach(computeCardBase);
   computeTurnarounds();
   computeTotals();
@@ -1724,9 +1890,71 @@ window.addEventListener('afterprint', () => {
   collapsedWeeks = [];
 });
 
-// Seed one full week: 7 blank day cards
-makeWeek();
-computeAll();
+// --- Staged setup: require rate + week start date before showing day cards ---
+// Without a week start date the turnaround math has no day sequence to work
+// with and silently under-reports. Gating on it makes that impossible.
+const setupGate = document.getElementById('setupGate');
+const setupDateEl = document.getElementById('setupDate');
+const startWeekBtn = document.getElementById('startWeekBtn');
+const sgWarn = document.getElementById('sgWarn');
+const rateSummary = document.getElementById('rateSummary');
+const weeksContainer = document.getElementById('weeks');
+const addWeekBtn = document.getElementById('addWeek');
+
+function setupIsValid(){
+  const h = currentHourly();
+  return h !== null && h > 0 && setupDateEl.value !== '';
+}
+
+function refreshSetupState(){
+  const ok = setupIsValid();
+  startWeekBtn.disabled = !ok;
+  sgWarn.classList.toggle('hide', ok);
+  const h = currentHourly();
+  document.getElementById('globalHourly').textContent = h !== null ? '$' + h.toFixed(2) : '—';
+}
+
+[globalRateEl, globalHrsEl, setupDateEl].forEach(el => {
+  el.addEventListener('input', refreshSetupState);
+  el.addEventListener('change', refreshSetupState);
+});
+
+function enterWorkspace(){
+  if(!setupIsValid()) return;
+  setupGate.classList.add('done');
+  rateSummary.classList.add('show');
+  weeksContainer.style.display = '';
+  addWeekBtn.style.display = '';
+
+  // Populate the collapsed summary
+  const h = currentHourly();
+  document.getElementById('rsRate').textContent =
+    '$' + (globalRateEl.value || '?') + ' / ' + (globalHrsEl.value || '?') + 'h';
+  document.getElementById('rsHourly').textContent = h !== null ? '$' + h.toFixed(2) : '—';
+  const dparts = setupDateEl.value.split('-');
+  document.getElementById('rsDate').textContent =
+    dparts.length === 3 ? `${parseInt(dparts[1],10)}/${parseInt(dparts[2],10)}/${dparts[0]}` : setupDateEl.value;
+
+  // Build the first week seeded with the chosen start date
+  if(weeksContainer.querySelectorAll('details.week').length === 0){
+    const wk = makeWeek();
+    const firstCard = wk.querySelector('.day-card');
+    const dateField = firstCard.querySelector('[data-field="date"]');
+    dateField.value = setupDateEl.value;
+    cascadeWeekDates(wk.querySelector('.week-body'));
+  }
+  computeAll();
+}
+
+startWeekBtn.addEventListener('click', enterWorkspace);
+
+document.getElementById('editSetupBtn').addEventListener('click', () => {
+  setupGate.classList.remove('done');
+  rateSummary.classList.remove('show');
+  refreshSetupState();
+});
+
+refreshSetupState();
 
 // --- iframe auto-resize ---
 // When embedded (e.g. in a Squarespace Code Block via <iframe>), report our
