@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-<title>CPA/600 — IATSE Local 600 / AICP Commercial Production Agreement Calc</title>
+<title>CPA/600 — Commercial Production Agreement Timecard (IATSE 600 / AICP)</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Barlow+Condensed:wght@600;700;800&display=swap" rel="stylesheet">
 <style>
@@ -388,6 +388,22 @@
     border:1px solid var(--line);
     border-radius:3px;
     padding:2px 5px;
+  }
+  .daytype-badge{
+    font-family:'Barlow Condensed', sans-serif;
+    font-weight:600;
+    font-size:9.5px;
+    letter-spacing:0.5px;
+    text-transform:uppercase;
+    color:var(--muted);
+    border:1px solid var(--line);
+    border-radius:3px;
+    padding:2px 5px;
+    white-space:nowrap;
+  }
+  .daytype-badge.manual{
+    color:var(--yellow);
+    border-color:var(--yellow);
   }
   .day-head select{
     background:#111113;
@@ -918,11 +934,11 @@
   <header>
     <div class="title-block">
       <h1>CPA/600</h1>
-      <span class="tag">IATSE 600 · AICP CPA Calc</span>
+      <span class="tag">Commercial Production Agreement · IATSE 600 + AICP</span>
       <a href="https://venmo.com/codyjonescolor" target="_blank" rel="noopener" class="coffee-btn" title="Tip the developer via Venmo">☕ Buy me a coffee</a>
       <button id="printBtn" class="print-btn" title="Print / Save as PDF">Print</button>
     </div>
-    <div class="subtitle">Enter times as decimal hours off your timecard (e.g. 5.5 = 5:30a, 20.7 = 8:42p). For a wrap past midnight, keep adding — 26.0 = 2:00a next day. Set the date on each card and mark days off — turnaround needs both to know your week's shape.</div>
+    <div class="subtitle"><b style="color:var(--yellow);">For commercial production only</b> — built on the IATSE/AICP Commercial Production Agreement. Feature, television, and other agreements use different meal, overtime, and turnaround rules; don't use this for those. &nbsp;Enter times as decimal hours off your timecard (e.g. 5.5 = 5:30a, 20.7 = 8:42p). For a wrap past midnight, keep adding — 26.0 = 2:00a next day. Set the date on each card and mark days off — turnaround needs both to know your week's shape.</div>
   </header>
 
   <div id="jsNotice" style="background:rgba(226,72,47,0.12);border:1px solid #e2482f;border-radius:6px;padding:12px 14px;margin-bottom:16px;font-size:12.5px;line-height:1.6;color:#ededec;">
@@ -942,8 +958,9 @@
     <summary>Contract Reference</summary>
     <div class="ref-body">
       <div class="card" id="ref-split"><b>Split call — dismissed &amp; recalled same day</b><i style="display:block;font-size:10px;color:var(--muted);margin-bottom:5px;">Note: this is NOT "splits" in the sense of call times creeping later across a week into a fraturday — that pattern is already handled by the turnaround math, day to day. This is one day with a genuine mid-day dismissal and recall (e.g. sunrise block, released, back for sunset).</i>The CPA has NO same-day dismissal-and-recall mechanism, so such a day has two defensible billing theories — pick one via the Split call dropdown, and give the producer both as options: <b>Position A (paid through)</b> — one continuous day on the OT ladder, no turnaround, arguing there was no genuine dismissal (the gap is just paid time you're owed). <b>Position B (two calls)</b> — each block bills on its own ladder PLUS a turnaround penalty for the sub-10-hr midday gap (under 6 hrs rest → +1 hr straight time for ALL recalled-block hours). The two theories are mutually exclusive — you can't claim "no real dismissal" (A) and "dismissal triggered turnaround" (B) at once. The tool shows both totals so you can choose; often A is both higher and the cleaner argument.</div>
+      <div class="card" id="ref-weekly"><b>Weekly-tracked items</b>Three things depend on the whole week, not one day: (1) <b>6th/7th day multipliers</b> — the work week is "any five or six consecutive work days within seven consecutive days," so your 6th worked day pays 1.5× and 7th pays 2.0× regardless of that day's hours. The app counts worked days per week and sets this automatically; change the dropdown to override and it'll show "manual." (2) <b>20-penalty meal cap</b> — past 20 meal violations in a workweek, further ½-hr violations pay one hour of prevailing rate each instead of the flat schedule. (3) <b>Weekend turnaround</b> — 54 hrs after a five-day week, 32 hrs after a six-day week. <i style="display:block;font-size:10px;color:var(--muted);margin-top:4px;">Note: the CPA covers employees. If you're invoicing as an independent contractor, weekly overtime under FLSA/state wage law is a separate question from these contract tiers — worth asking a labor attorney rather than assuming either applies.</i></div>
       <div class="card" id="ref-vintage"><b>Source documents &amp; currency</b>Base text: 2022 CPA. The 2025–2028 MOA (executed 9/30/25, term through 9/30/28) carries all 2022 provisions forward unchanged except scale rates (+4% / +3.5% Oct 1 2026 / +3% Oct 1 2027), benefit contributions (+$5/day/yr), and two side letters (ADR, information exchange). MP schedule, OT tiers, turnaround, and zone/travel language verified current against both the MOA and the official 2025–2028 wage charts.</div>
-      <div class="card" id="ref-scale"><b>2025–2028 scale rates — Outside LA County (hourly)</b>Through 9/30/26 → from 10/1/26: DIT $90.00 → $93.15 · 1st AC $68.33 → $70.72 · 2nd AC $62.74 → $64.94 · Cam Op $94.45 → $97.76 · Sound Mixer $97.43 → $100.84 · Key Grip / CLT $61.15 → $63.29 · Grip / Lighting Tech $52.27 → $54.10. Min call = 8 × hourly. A quoted "day rate / 12" deal converts to hourly via ÷14 — compare that number against scale to see where your deal sits.</div>
+      <div class="card" id="ref-scale"><b>2025–2028 scale rates — Outside LA County (hourly)</b>Through 9/30/26 → from 10/1/26: DIT $90.00 → $93.15 · 1st AC $68.33 → $70.72 · 2nd AC $62.74 → $64.94 · Cam Op $94.45 → $97.76 · Sound Mixer $97.43 → $100.84 · Key Grip / CLT $61.15 → $63.29 · Grip / Lighting Tech $52.27 → $54.10. Min call = 8 × hourly. A quoted "day rate / 12" deal converts to hourly via ÷14 — compare that number against scale to see where your deal sits. <i style="display:block;font-size:10px;color:var(--muted);margin-top:4px;">Appendix B rates (outside LA County). Work inside LA County uses Appendix A, and the Northeast Corridor has its own schedule — check the wage charts for your region.</i></div>
       <div class="card" id="ref-clock"><b>Work clock, minimums &amp; rounding</b>Work time runs set call → set dismissal. Minimum call: 8 work hours (travel-only days: 4-hr min, 8-hr max at straight allowance). All time computed in ¼-hour units — this app rounds worked time and turnaround UP to the next quarter hour (employee-favorable); each card shows your raw logged time next to the billed figure. Overtime premiums never compound.</div>
       <div class="card" id="ref-meal1"><b>1st meal</b>Due within 6 hrs of call time. Late = penalty from due time to when meal actually started.</div>
       <div class="card" id="ref-meal2"><b>2nd meal</b>Applies once you work past the 8-hr minimum call (the app auto-checks this from your hours). Due within 6 hrs of the end of the 1st meal. If no 2nd meal was given, delay runs until wrap.</div>
@@ -954,7 +971,7 @@
       <div class="card" id="ref-6th7th"><b>6th / 7th day &amp; holiday</b>6th day: 0–12h @1.5x, beyond @3x. 7th day/holiday: 0–12h @2x, beyond @4x.</div>
       <div class="card" id="ref-turnaround"><b>Daily rest / turnaround (main CPA)</b>10-hr rest period, measured <b style="display:inline;font-size:11px;">portal to portal</b> — door to door, meaning from when you <b style="display:inline;font-size:11px;">got home</b> one night to when you <b style="display:inline;font-size:11px;">left home</b> the next morning. Your commute is NOT rest, so drive time eats into the 10 hours. Enter "Left home (AM)" and "Got home (PM)" on each day card; if left blank, the tool falls back to set call/wrap (which understates the invasion for anyone with a real commute). Invaded with ≥6 hrs rest given: +1 hr straight time per invaded hour. Under 6 hrs rest: +1 hr straight time for ALL hours worked on the next call.</div>
       <div class="card" id="ref-weekend"><b>Weekend turnaround</b>54 hrs after a 5-day workweek · 32 hrs after a 6-day workweek, same portal-to-portal basis and infringement payment as daily. The app picks the threshold from the calendar gap between worked days.</div>
-      <div class="card" id="ref-zone"><b>Zone travel</b>30-mile production zone (this job: measured from Lincoln City Hall, 555 S 10th St). Inside the zone, the commute is on you. Outside: travel time beyond the zone edge is paid at 1x as an allowance — but ONLY for pre-call / post-wrap legs. Mid-day company moves are already in your work hours. Mileage (drivers only, own vehicle) is a separate line at the IRS rate: zone-edge miles for reporting out-of-zone, and any required inter-location legs in or out of zone.</div>
+      <div class="card" id="ref-zone"><b>Zone travel</b>The production zone is a 30-mile radius. For the named production centers the CPA lists, it's measured from that city's designated point; elsewhere, it's measured from the production's base of operations (production office, or that city's City Hall by convention) — establish this with production before invoicing, since it sets every distance claim. Inside the zone, the commute is on you. Outside: travel time beyond the zone edge is paid at 1x as an allowance — but ONLY for pre-call / post-wrap legs. Mid-day company moves are already in your work hours. Mileage (drivers only, own vehicle) is a separate line at the IRS rate: zone-edge miles for reporting out-of-zone, and any required inter-location legs in or out of zone.</div>
       <div class="card" id="ref-supplement"><b>CPA vs. CPA Supplement — two forks</b>This app uses the main CPA (the conservative fork). A parallel Supplement covers non-BFPE / late-signing companies and is richer for crew: outside-zone travel is paid as WORK TIME (feeds the OT tiers, and doesn't accrue meal penalties) and overnight-location work time runs portal-to-portal with no 1-hr daily travel cap (2022 MOA, Art. XIX Supplement-only modifications). Know which fork a job's benchmark is before invoicing.</div>
       <div class="card" id="ref-vehicle"><b>When work time ends &amp; vehicle drivers</b>Work time ends at dismissal "or when employee is no longer performing duties or assignments as directed by the Employer" (Art. XIV as amended, 2022 MOA). Securing a production vehicle is a directed duty — drivers are on the clock until the vehicle is parked and locked.</div>
     </div>
@@ -1455,6 +1472,8 @@ function makeCard(parentBody){
   dateInput.addEventListener('change', () => autofillWeekDates(div));
   const m2box = div.querySelector('[data-field="m2applies"]');
   m2box.addEventListener('change', () => { div.dataset.m2manual = '1'; computeAll(); });
+  const dtSel = div.querySelector('[data-field="daytype"]');
+  if(dtSel) dtSel.addEventListener('change', () => { div.dataset.dtmanual = '1'; computeAll(); });
   div.querySelector('.remove-btn').addEventListener('click', () => {
     const weekBody = div.closest('.week-body');
     div.remove();
@@ -1820,12 +1839,73 @@ function computeTurnarounds(){
   });
 }
 
+// Count worked days sequentially within each week and set the 6th/7th day
+// multiplier automatically. The CPA defines the work week as "any five or six
+// consecutive work days within seven consecutive days," so the 6th day worked
+// pays 1.5x and the 7th pays 2.0x — regardless of hours that day. Days marked
+// off don't count toward the tally. Manual override wins if the user has
+// touched the dropdown on that card.
+function autoSetDayTypes(){
+  [...weeksEl.querySelectorAll('details.week')].forEach(wk => {
+    let workedCount = 0;
+    [...wk.querySelectorAll('.day-card')].forEach(div => {
+      const sel = div.querySelector('[data-field="daytype"]');
+      const offBox = div.querySelector('[data-field="dayoff"]');
+      if(!sel || !offBox) return;
+
+      const isOff = offBox.checked;
+      const call = parseHrs(div.querySelector('[data-field="call"]').value);
+      const wrap = parseHrs(div.querySelector('[data-field="wrap"]').value);
+      const isWorked = !isOff && call !== null && wrap !== null;
+
+      if(isWorked) workedCount++;
+
+      // Respect a manual override on this card
+      if(div.dataset.dtmanual) {
+        markDayTypeAuto(div, false, isWorked ? workedCount : null);
+        return;
+      }
+
+      let want = 'reg';
+      if(isWorked && workedCount === 6) want = '6th';
+      else if(isWorked && workedCount >= 7) want = '7th';
+
+      if(sel.value !== want) sel.value = want;
+      markDayTypeAuto(div, true, isWorked ? workedCount : null);
+    });
+  });
+}
+
+// Show a small badge next to the day-type dropdown indicating which worked day
+// of the week this is, and whether it was auto-set or manually overridden.
+function markDayTypeAuto(div, isAuto, dayNum){
+  const head = div.querySelector('.day-head');
+  if(!head) return;
+  let badge = head.querySelector('.daytype-badge');
+  if(!badge){
+    badge = document.createElement('span');
+    badge.className = 'daytype-badge';
+    const sel = div.querySelector('[data-field="daytype"]');
+    if(sel && sel.parentElement === head) sel.insertAdjacentElement('afterend', badge);
+    else head.appendChild(badge);
+  }
+  if(dayNum === null || dayNum === undefined){
+    badge.textContent = '';
+    badge.style.display = 'none';
+    return;
+  }
+  badge.style.display = '';
+  badge.textContent = isAuto ? `day ${dayNum} of wk` : `day ${dayNum} · manual`;
+  badge.classList.toggle('manual', !isAuto);
+}
+
 function computeAll(){
   // Self-heal date cascades: re-sync every week's locked dates against its first
   // card every pass. Cheap (cascadeWeekDates no-ops when already correct) and
   // prevents stale dates if a card was added/edited before the date field itself
   // was ever blurred — which otherwise silently breaks turnaround's day-sort.
   [...weeksEl.querySelectorAll('.week-body')].forEach(cascadeWeekDates);
+  autoSetDayTypes();
   allCards().forEach(computeCardBase);
   computeTurnarounds();
   computeTotals();
